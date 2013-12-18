@@ -1,0 +1,1 @@
+Applicazione blog+forum in PHP, walibs3-based. UI completamente ridefinibile mediante XSLT.

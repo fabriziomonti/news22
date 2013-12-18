@@ -1,0 +1,40 @@
+/* context menu specific */
+.contextmenu
+	{
+	background-color: #c0c0c0;
+	}
+	
+	
+.contextmenu li a,
+.contextmenu li a:active,
+.contextmenu li a:visited,
+.contextmenu li a:link,
+.contextmenu li a:hover
+	{ 
+	padding: 1px;
+	padding-left: 3px;
+	padding-right: 40px;
+	background-color: #c0c0c0;
+	color: #000000;
+	font-size: 11px;
+	
+	}
+	
+.contextmenu li a:hover	
+	{ 
+	background-color: #f0f0f0;
+	}
+	
+
+form#watabella.watabella table tr td
+	{
+	vertical-align: top;
+	padding-left: 4px;
+	padding-right: 4px;
+	}
+	
+form.watabella table td button
+	{
+	width: 74px;
+	font-size: 11px;
+	}

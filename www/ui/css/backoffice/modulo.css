@@ -1,0 +1,61 @@
+form.wamodulo
+	{
+	background-color: #cacaca;
+	background: linear-gradient(0deg, white, #cacaca 99%) no-repeat;
+	}
+	
+	
+input[type="text"].wamodulo_selezione_ext_non_trovato
+	{
+	color: #ff0000;
+	}
+
+.wamodulo_selezione_ext_lista
+	{
+	background-color: #000080;
+	position: absolute;
+	z-index: 1000;
+    border: #000000 1px solid;
+	padding: 2px;
+	height: 200px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	}
+
+a.wamodulo_selezione_ext_lista:active, 
+a.wamodulo_selezione_ext_lista:visited, 
+a.wamodulo_selezione_ext_lista:link, 
+a.wamodulo_selezione_ext_lista,
+.wamodulo_selezione_ext_lista a
+	{
+	text-decoration: none;
+	color: #ffffff;
+	background-color: #000080;
+	width: 100%;
+	display: block;
+	border-bottom: #cacaca 1px solid;
+	}
+
+a.wamodulo_selezione_ext_lista:hover
+	{
+	text-decoration: underline;
+	}
+
+div[id*='wamodulo_cornice'] 
+	{
+    border: #000000 1px solid;
+	}
+
+div[id*='wamodulo_cornice'] span
+	{
+    border: none;
+	z-index: 100;
+	background-color: #cacaca;
+	padding-right: 6px;
+	}
+
+div.wamodulo_areatesto_ext span
+	{
+	border: none;
+	}
+	

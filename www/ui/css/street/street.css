@@ -1,0 +1,512 @@
+@CHARSET "UTF-8";
+	
+body {
+	margin: 0px;
+	padding: 0px;
+	background-color: #dddddd;
+	background-repeat: repeat-y;
+	background-position: center;
+	background-image: url(../../img/street/ombra.png);
+	text-align: justify;
+	color: #333333;
+	font-family: verdana, arial, helvetica;
+}
+
+
+div#pagina {
+	margin: auto;
+	width: 980px;
+	
+}
+
+
+div#contenitore {
+	width: 100%;
+	float:left;
+	background-color: #ffffff;
+}
+
+
+div#header {
+	width: 950px;
+	float: left;
+	height: 170px;
+	margin: 15px;
+	background-color: #dddddd;
+	background-image: url(../../img/street/logo_grande.png);
+	background-repeat: no-repeat;
+	background-position: left;
+	border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+}
+
+
+div#bloccoMenu {
+	width: 630px;
+	float: left;
+	padding: 15px;
+}
+
+
+div#menuCategorieArticoli {
+	width: 100%;
+	float: left;
+	margin-bottom: 5px;
+}
+
+
+div#menuCategorieArgomenti {
+	width: 100%;
+	float: left;
+	margin-bottom: 5px;
+}
+
+
+div#bloccoRicerca {
+	width: 290px;
+	text-align: right;
+	padding: 15px;
+	float: left;
+}
+
+
+
+div#colonnaSx {
+	width: 950px;
+	float: left;
+	padding:15px;
+}
+
+
+div#colonnaDx {
+	width: 290px;
+	float: left;
+	padding:15px;
+}
+
+div#footer {
+	width: 950px;
+	background-color: #999999;
+	float: left;
+	padding:15px;
+}
+
+a {
+	color: #FF6600;
+	text-decoration: none;
+}
+
+
+a:hover {
+	text-decoration: underline;
+}
+
+
+h1 {
+	font-size: 1.2em;
+	
+}
+
+h2 {
+	font-size: 1em;
+	font-weight: bold;
+}
+
+p {
+	margin: 0px 0px 15px 0px;
+}
+
+
+label {
+	/*display: block;*/
+	width: 100%;
+	font-size: 1em;
+	font-weight: bold;
+}
+
+.btn_menuCategorieArticoli {
+	color:#333333;
+	margin: 0px 5px 5px 0px;
+	padding: 5px 10px 5px 10px;
+	display: block;
+	float:left;
+	background-color: #dddddd;
+	border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+}
+
+
+.btn_menuCategorieArticoli:hover {
+	color:#FFFFFF;
+	background-color: #FF6600;
+	text-decoration: none;
+}
+
+.btn_menuCategorieArticoli_selezionato {
+	color:#FFFFFF;
+	background-color: #FF6600;
+	margin: 0px 5px 5px 0px;
+	padding: 5px 10px 5px 10px;
+	display: block;
+	float:left;
+	border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+}
+
+
+.btn_menuCategorieArticoli_selezionato:hover {
+	color:#333333;
+	background-color: #dddddd;
+	text-decoration: none;
+}
+
+
+.btn_menuCategorieArgomenti {
+	color:#FFFFFF;
+	background-color: #333333;
+	margin: 0px 5px 5px 0px;
+	padding: 5px 10px 5px 10px;
+	display: block;
+	float:left;
+	text-decoration: none;
+	border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+}
+
+
+.btn_menuCategorieArgomenti:hover {
+	color:#FFFFFF;
+	background-color: #FF6600;
+	text-decoration: none;
+}
+
+.btn_menuCategorieArgomenti_selezionato {
+	color:#FFFFFF;
+	background-color: #FF6600;
+	margin: 0px 5px 5px 0px;
+	padding: 5px 10px 5px 10px;
+	display: block;
+	float:left;
+	text-decoration: none;
+	border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+}
+
+
+.btn_menuCategorieArgomenti_selezionato:hover {
+	color:#FFFFFF;
+	background-color: #333333;
+	text-decoration: none;
+}
+
+
+.inPrimoPiano_blocco {
+	display: block;
+	float:left;
+	padding:15px;
+	width: 950px;
+	margin-bottom:5px;
+	border-top-style: dashed;
+	border-top-width: thin;
+	border-bottom-style: dashed;
+	border-bottom-width: thin;
+	border-color: #cccccc;
+}
+
+.inPrimoPiano_titolo {
+	font-size: 2em;
+	margin: 0px 0px 10px 0px;
+}
+
+.inPrimoPiano_sottoTitolo {
+	font-size: 20px;
+	margin: 0px 0px 10px 0px;
+}
+
+.inPrimoPiano_foto {
+	width: 950px;
+	border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+	margin: 0px 0px 10px 0px;
+}
+
+.inPrimoPiano_sintesi {
+	font-size: 1.2em;
+	font-style: italic;
+	margin: 0px 0px 10px 0px;
+	
+	
+}
+
+
+
+
+.articolo_blocco,
+.argomento_blocco
+{
+	display: block;
+	float:left;
+	width: 950px;
+	border-right-style: dashed;
+	border-right-width: thin;
+	border-bottom-style: dashed;
+	border-bottom-width: thin;
+	border-color: #cccccc;
+	padding: 0px 15px 15px 0px;
+	margin-bottom: 15px;
+}
+
+.articolo_titolo ,
+.argomento_titolo
+{
+	float:left;
+	width: 100%;
+	font-size: 1.2em;
+	margin: 0px 0px 5px 0px;
+}
+
+.articolo_sottoTitolo {
+	float:left;
+	width: 100%;
+	font-size: 20px;
+	margin: 0px 0px 5px 0px;
+}
+
+.articolo_bloccoFoto {
+	float:left;
+	width: 100%;
+	margin-bottom:15px;
+}
+
+.articolo_foto {
+	float:left;
+	width: 200px;
+	border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+	margin: 0px 10px 0px 0px;
+}
+
+.articolo_sintesi ,
+.argomento_sintesi
+{
+	font-size: 1em;
+	font-style: italic;
+	
+}
+
+
+.commenti,
+interventi
+{
+	float:left;
+	width: 100%;
+	text-align: right;
+
+}
+
+
+.btn_tagGenerico {
+	color: #333333;
+	font-size: 1.2em;
+	font-weight: bold;
+
+}
+
+
+
+.btn_tagGenerico:hover {
+	text-decoration: none;
+}
+
+.datiArticolo,
+.datiArgomento
+	{
+	float:left;
+	width: 99%;
+	padding:5px;
+	font-size: 0.8em;
+	color: #333333;
+	background-color: #DDDDDD;
+	margin: 0px 0px 15px 0px;
+		border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+	}
+
+.elencoCommenti ,
+.elencoInterventi
+{
+	float:left;
+	width: 99%;
+	padding:5px;
+	font-size: 0.8em;
+	color: #333333;
+	background-color: #DDDDDD;
+	margin: 0px 0px 15px 0px;
+	border-radius:10px 10px 10px 10px;
+	-moz-border-radius:10px 10px 10px 10px;
+}	
+
+.datiArgomento,
+.elencoInterventi
+{
+	color:#FFFFFF;
+	background-color: #333333;
+
+}
+
+
+.campo{
+	display: block;
+	width: 100%;
+	margin: 0px 0px 15px 0px;
+}
+
+.campo input
+	{
+	margin-right: 40px;
+	}
+
+
+.messaggio
+	{
+	font-size: 1.2em;
+	color: #FFFFFF;
+	padding: 10px;
+	border-radius:10px 10px 10px 10px;
+	display: block;
+	float: left;
+	width: 935px;
+	margin-left: 13px;
+	}
+
+.errore
+	{
+	background-color: #800000;
+	}
+
+.conferma
+	{
+	background-color: #008000;
+	}
+
+
+.ricercaAvanzata {
+	margin: 0px;
+	padding: 15px;
+	background-color: #ffffff;
+	background-image: none;
+	text-align: justify;
+	color: #333333;
+}
+
+div#intestazioneForum a
+	{
+	margin-top: 20px;
+	}
+
+div.campo img
+	{
+		margin-top: 6px;
+		margin-bottom: -6px;
+	
+	}
+	
+form input,
+form textarea
+{
+	border-radius:10px 10px 10px 10px;
+	padding-left: 6px;
+	padding-right: 6px;
+	
+}
+
+.mceEditor
+	{
+	width: 935px; 
+	height: 200px; 
+	}
+	
+input[type="button"],
+input[type="submit"]
+{
+	width: 140px;
+	text-transform: capitalize;
+}
+
+input[type="button"][name="bottone_ricerca_rapida"]
+{
+	width: 60px;
+}
+
+div.elencoArticoliUtente,
+div.elencoArgomentiUtente
+{
+	margin-bottom: 20px;
+}
+
+div.elencoArticoliUtente h1,
+div.elencoArgomentiUtente h1,
+div.elencoCommentiUtente  h1,
+div.elencoInterventiUtente  h1
+	{
+	margin-top: 30px;	
+	margin-bottom: 0px;	
+	}
+	
+div.elencoArticoliUtente table,
+div.elencoArgomentiUtente  table,
+div.elencoCommentiUtente table,
+div.elencoInterventiUtente table 
+	{
+	font-size: 12px;
+	width: 100%;
+	margin: 0px;	
+	}
+	
+div.elencoArticoliUtente table td,
+div.elencoArgomentiUtente table td,
+div.elencoCommentiUtente table td,
+div.elencoInterventiUtente table td
+	{
+	padding-right: 10px;
+	white-space: nowrap;
+	overflow: hidden;
+	}
+	
+div#colonnaSx form label table.allineamentoControlli,
+div#colonnaSx form label table.allineamentoControlli td,
+div#colonnaSx form div.campo table.allineamentoControlli,
+div#colonnaSx form div.campo table.allineamentoControlli td
+{
+	padding: 0px; 
+	margin: 0px;
+}
+
+div#colonnaSx form div.campo table.allineamentoControlli
+{
+	margin-top: -4px;
+}
+
+div#colonnaSx form label table.allineamentoControlli td,
+div#colonnaSx form div.campo table.allineamentoControlli td
+{
+	width: 300px;
+}
+
+div.bottoni_paginazione
+{
+	float:left;
+	width: 99%;
+	padding:5px;
+	margin-bottom: 20px;
+}
+
+div.pagina_precedente
+{
+	float: left;
+}
+
+div.pagina_successiva
+{
+	float: right;
+}
