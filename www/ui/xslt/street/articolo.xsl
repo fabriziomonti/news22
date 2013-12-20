@@ -45,7 +45,17 @@
 
 							<!--blocco dei commenti-->
 							<xsl:for-each select="pagina/elementi/elemento[nome='commenti']/valore/riga" >
-								<div class="elencoCommenti">
+								<xsl:variable name="livello">
+									<xsl:choose>
+										<xsl:when test="string-length(chiave_ordinamento) = 0">0</xsl:when>
+										<xsl:when test="string-length(chiave_ordinamento) = 11">1</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="(string-length(chiave_ordinamento) - string-length(translate(chiave_ordinamento, '_', ''))) + 1" />
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+
+								<div class="elencoCommenti" style="width: {99 - $livello * 2}%; margin-left: {$livello * 2}%">
 									<a name="commento_{id_commento}" />
 									<xsl:if test="avatar != ''">
 										<img src="../downloaddoc.php?tabella=utenti&amp;tipo=avatar&amp;id={id_utente}" />
@@ -57,12 +67,21 @@
 									<p />
 
 									[ Pubblicato da: 
-									<a href='vedi_utente.php?id_utente={id_utente}'>
+									<a href='vedi_utente.php?id_utente={id_utente}' id='nickname_{id_commento}'>
 										<xsl:value-of select="nickname"/>
 									</a>
 									il: <xsl:value-of select="str:tokenize(data_ora_creazione, ' ')[1]"/>
 									alle: <xsl:value-of select="str:tokenize(data_ora_creazione, ' ')[2]"/>
 									]
+
+									<!--302 = privilegio inserimento commenti tutti; 303 inserimento propri-->
+									<xsl:if test="$dati_utente/supervisore = 1 or
+													$dati_utente/privilegi/elemento_id_302 = 302 or 
+													$dati_utente/privilegi/elemento_id_303 = 303">
+										<a href="javascript:rispondiCommento('{id_articolo}', '{id_commento}')">
+											<img src="../ui/img/street/Rispondi.gif" style="float: right; margin-right: 8px;" alt="Rispondi" title="Rispondi" />
+										</a>
+									</xsl:if>
 
 									<!--abilitazione bottoni modifica/cancella per chi ha i privilegi-->
 									<!--304 = privilegio modifica tutti; 305 modifica propri-->
@@ -70,7 +89,7 @@
 													$dati_utente/privilegi/elemento_id_304 = 304 or 
 													($dati_utente/privilegi/elemento_id_305 = 305 and $dati_utente/id_utente = id_utente)">
 										<a href="javascript:modificaCommento('{id_articolo}', '{id_commento}')">
-											<img src="../ui/img/street/Modifica.gif" style="float: right; margin-right: 4px;"/>
+											<img src="../ui/img/street/Modifica.gif" style="float: right; margin-right: 8px;" alt="Modifica" title="Modifica" />
 										</a>
 									</xsl:if>
 
@@ -79,7 +98,7 @@
 													$dati_utente/privilegi/elemento_id_306 = 306 or 
 													($dati_utente/privilegi/elemento_id_307 = 307 and $dati_utente/id_utente = id_utente)">
 										<a href="javascript:eliminaCommento('{id_articolo}', '{id_commento}')">
-											<img src="../ui/img/street/Elimina.gif" style="float: right; margin-right: 4px;"/>
+											<img src="../ui/img/street/Elimina.gif" style="float: right; margin-right: 8px;" alt="Elimina" title="Elimina" />
 										</a>										
 									</xsl:if>
 								</div>
@@ -115,8 +134,8 @@
 											<textarea name='testo' class="mceEditor"></textarea>
 										</div>
 										<div class="campo">
-											<input type='submit' value='invia' />
-											<input name="annulla_modifica" type='button' value='annulla' onclick="annullaModificaCommento('{pagina/elementi/elemento[nome='articolo']/valore/riga/id_articolo}')" style="visibility:hidden" />
+											<input type='submit' name="cmd_invia" value='invia' />
+											<input type='button' name="annulla_modifica" value='annulla' onclick="annullaModificaCommento('{pagina/elementi/elemento[nome='articolo']/valore/riga/id_articolo}')" style="visibility:hidden" />
 										</div>
 									</form>
 								</div>

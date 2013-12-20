@@ -790,9 +790,14 @@ class news22 extends waApplicazione
 					"</image>\n";
 
 		$sql = "SELECT commenti.*," .
-			" utenti.nickname" . 
+			" utenti.nickname," . 
+			" cg.data_ora_creazione AS data_ora_creazione_genitore," .
+			" ug.nickname AS nickname_genitore" .
 			" FROM commenti" .
 			" INNER JOIN utenti ON commenti.id_utente=utenti.id_utente" .
+			// cg = commento genitore
+			" LEFT JOIN commenti AS cg ON commenti.id_commento_genitore=cg.id_commento" .
+			" LEFT JOIN utenti AS ug ON cg.id_utente=ug.id_utente" .
 			" WHERE NOT commenti.sospeso" .
 			" AND commenti.id_articolo=" . $dbconn->interoSql($id_articolo);
 			" ORDER BY commenti.id_commento DESC";
@@ -804,11 +809,19 @@ class news22 extends waApplicazione
 			$link = "http://$this->dominio$this->httpwd/street/articolo.php?id_articolo=$id_articolo#commento_" . $riga->valore("id_commento");
 			$titolo = strip_tags($riga->valore("testo"));
 			$titolo = substr($titolo, 0, 50) . (strlen($titolo) > 50 ? "..." : '');
+			$dati_genitore = $riga->valore("nickname_genitore") ? 
+								"<i>(in risposta al commento di " .
+									$riga->valore("nickname_genitore") . 
+									" del " . date("d/m/Y", $riga->valore("data_ora_creazione_genitore")) .
+									" alle " . date("H.i.s", $riga->valore("data_ora_creazione_genitore")) .
+									")</i><br/><br/>" 
+									: '';
 			$xml .= "<item>\n" .
 						"<title>$titolo</title>\n" .
       					"<link>$link</link>\n" .
       					"<description></description>\n" .
       					"<content:encoded><![CDATA[" . 
+												$dati_genitore .
 												$riga->valore("testo") . 
 												"]]></content:encoded>\n" .
 					    "<pubDate>" . gmdate("r", $riga->valore("data_ora_creazione")) . "</pubDate>\n" .
@@ -852,9 +865,14 @@ class news22 extends waApplicazione
 					"</image>\n";
 
 		$sql = "SELECT interventi.*," .
-			" utenti.nickname" . 
+			" utenti.nickname," . 
+			" ig.data_ora_creazione AS data_ora_creazione_genitore," .
+			" ug.nickname AS nickname_genitore" .
 			" FROM interventi" .
 			" INNER JOIN utenti ON interventi.id_utente=utenti.id_utente" .
+			// ig = intervento genitore
+			" LEFT JOIN interventi AS ig ON interventi.id_intervento_genitore=ig.id_intervento" .
+			" LEFT JOIN utenti AS ug ON ig.id_utente=ug.id_utente" .
 			" WHERE NOT interventi.sospeso" .
 			" AND interventi.id_argomento=" . $dbconn->interoSql($id_argomento);
 			" ORDER BY interventi.id_intervento DESC";
@@ -866,11 +884,19 @@ class news22 extends waApplicazione
 			$link = "http://$this->dominio$this->httpwd/street/argomento.php?id_argomento=$id_argomento#intervento_" . $riga->valore("id_intervento");
 			$titolo = strip_tags($riga->valore("testo"));
 			$titolo = substr($titolo, 0, 50) . (strlen($titolo) > 50 ? "..." : '');
+			$dati_genitore = $riga->valore("nickname_genitore") ? 
+								"<i>(in risposta all' intervento di " .
+									$riga->valore("nickname_genitore") . 
+									" del " . date("d/m/Y", $riga->valore("data_ora_creazione_genitore")) .
+									" alle " . date("H.i.s", $riga->valore("data_ora_creazione_genitore")) .
+									")</i><br/><br/>" 
+									: '';
 			$xml .= "<item>\n" .
 						"<title>$titolo</title>\n" .
       					"<link>$link</link>\n" .
       					"<description></description>\n" .
       					"<content:encoded><![CDATA[" . 
+												$dati_genitore .
 												$riga->valore("testo") . 
 												"]]></content:encoded>\n" .
 					    "<pubDate>" . gmdate("r", $riga->valore("data_ora_creazione")) . "</pubDate>\n" .

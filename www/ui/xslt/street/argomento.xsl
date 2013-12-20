@@ -43,7 +43,17 @@
 
 							<!--blocco degli interventi-->
 							<xsl:for-each select="pagina/elementi/elemento[nome='interventi']/valore/riga" >
-								<div class="elencoInterventi">
+								<xsl:variable name="livello">
+									<xsl:choose>
+										<xsl:when test="string-length(chiave_ordinamento) = 0">0</xsl:when>
+										<xsl:when test="string-length(chiave_ordinamento) = 11">1</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="(string-length(chiave_ordinamento) - string-length(translate(chiave_ordinamento, '_', ''))) + 1" />
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+
+								<div class="elencoInterventi" style="width: {99 - $livello * 2}%; margin-left: {$livello * 2}%">
 									<a name="intervento_{id_intervento}" />
 									<xsl:if test="avatar != ''">
 										<img src="../downloaddoc.php?tabella=utenti&amp;tipo=avatar&amp;id={id_utente}" />
@@ -55,12 +65,21 @@
 									<p />
 
 									[ Pubblicato da: 
-									<a href='vedi_utente.php?id_utente={id_utente}'>
+									<a href='vedi_utente.php?id_utente={id_utente}' id='nickname_{id_intervento}'>
 										<xsl:value-of select="nickname"/>
 									</a>
 									il: <xsl:value-of select="str:tokenize(data_ora_creazione, ' ')[1]"/>
 									alle: <xsl:value-of select="str:tokenize(data_ora_creazione, ' ')[2]"/>
 									]
+
+									<!--302 = privilegio inserimento interventi tutti; 303 inserimento propri-->
+									<xsl:if test="$dati_utente/supervisore = 1 or
+													$dati_utente/privilegi/elemento_id_502 = 502 or 
+													$dati_utente/privilegi/elemento_id_503 = 503">
+										<a href="javascript:rispondiIntervento('{id_argomento}', '{id_intervento}')">
+											<img src="../ui/img/street/Rispondi.gif" style="float: right; margin-right: 8px;" alt="Rispondi" title="Rispondi" />
+										</a>
+									</xsl:if>
 
 									<!--abilitazione bottoni modifica/cancella per chi ha i privilegi-->
 									<!--304 = privilegio modifica tutti; 305 modifica propri-->
@@ -113,7 +132,7 @@
 											<textarea name='testo' class="mceEditor"></textarea>
 										</div>
 										<div class="campo">
-											<input type='submit' value='invia' />
+											<input type='submit' name="cmd_invia" value='invia' />
 											<input name="annulla_modifica" type='button' value='annulla' onclick="annullaModificaIntervento('{pagina/elementi/elemento[nome='argomento']/valore/riga/id_argomento}')" style="visibility:hidden" />
 										</div>
 									</form>

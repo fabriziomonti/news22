@@ -7,6 +7,10 @@ if (!defined('__CONFIG_VARS'))
 	// su git, mentre il presente file rimane per documentazione
 	@include dirname(__FILE__) . "/myconfig.inc.php";
 	
+	// file contenente i parametri della versione (che cambiano e devono essere 
+	// inviati al server, a differenza di questi)
+	include dirname(__FILE__) . "/versionconfig.inc.php";
+	
 	
 	define('APPL_DOMAIN', 						$_SERVER['HTTP_HOST']);
 //	define('APPL_DIRECTORY', 					'');
@@ -14,8 +18,6 @@ if (!defined('__CONFIG_VARS'))
 	define('APPL_DOC_DIRECTORY', 				dirname(__FILE__) . '/web_files');
 	define('APPL_NAME', 						'news22');
 	define('APPL_TITLE', 						"News di 22 Passi d'Amore e Dintorni");
-	define('APPL_REL', 							'1.0.2');
-	define('APPL_REL_DATE', 					mktime(0,0,0, 10, 14, 2013));
 	define('APPL_SMTP_SERVER', 					'');
 	define('APPL_SMTP_USER', 					'');
 	define('APPL_SMTP_PWD', 					'');

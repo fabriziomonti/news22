@@ -12,6 +12,28 @@ function validaForm(form)
 	}
 
 //-------------------------------------------------------------------------
+function rispondiCommento(id_articolo, id_commento)
+	{
+	var nickname = document.getElementById("nickname_" + id_commento).innerHTML;
+	var label = document.getElementById("label_testo_commento");
+	var form = document.getElementById("wamodulo");
+	
+	label.innerHTML = "Rispondi a " + nickname;
+	form.annulla_modifica.style.visibility = "";
+	form.action = "?id_articolo=" + id_articolo + "&id_commento_genitore=" + id_commento;
+	if (typeof tinyMCE === 'undefined')
+		{
+		form.testo.focus();
+		}
+	else
+		{
+		form.annulla_modifica.focus();
+		tinyMCE.get('testo').focus();
+		
+		}
+	}
+	
+//-------------------------------------------------------------------------
 function modificaCommento(id_articolo, id_commento)
 	{
 	var label = document.getElementById("label_testo_commento");
@@ -45,6 +67,10 @@ function annullaModificaCommento(id_articolo)
 	form.testo.value = "";
 	form.annulla_modifica.style.visibility = "hidden";
 	form.action = "?id_articolo=" + id_articolo;
+	
+	if (tinyMCE && tinyMCE.get('testo'))
+		tinyMCE.get('testo').setContent('');
+
 	}
 
 //-------------------------------------------------------------------------

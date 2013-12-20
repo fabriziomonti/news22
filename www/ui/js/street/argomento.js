@@ -12,6 +12,28 @@ function validaForm(form)
 	}
 
 //-------------------------------------------------------------------------
+function rispondiIntervento(id_argomento, id_intervento)
+	{
+	var nickname = document.getElementById("nickname_" + id_intervento).innerHTML;
+	var label = document.getElementById("label_testo_intervento");
+	var form = document.getElementById("wamodulo");
+	
+	label.innerHTML = "Rispondi a " + nickname;
+	form.annulla_modifica.style.visibility = "";
+	form.action = "?id_argomento=" + id_argomento + "&id_intervento_genitore=" + id_intervento;
+	if (typeof tinyMCE === 'undefined')
+		{
+		form.testo.focus();
+		}
+	else
+		{
+		form.annulla_modifica.focus();
+		tinyMCE.get('testo').focus();
+		
+		}
+	}
+	
+//-------------------------------------------------------------------------
 function modificaIntervento(id_argomento, id_intervento)
 	{
 	var label = document.getElementById("label_testo_intervento");
@@ -45,6 +67,9 @@ function annullaModificaIntervento(id_argomento)
 	form.testo.value = "";
 	form.annulla_modifica.style.visibility = "hidden";
 	form.action = "?id_argomento=" + id_argomento;
+
+	if (tinyMCE && tinyMCE.get('testo'))
+		tinyMCE.get('testo').setContent('');
 	}
 
 //-------------------------------------------------------------------------

@@ -30,7 +30,7 @@
 						<xsl:if test="$dati_utente">
 
 							<h1>Il tuo profilo</h1>
-							<xsl:if test="$dati_utente/avatar">
+							<xsl:if test="$dati_utente/avatar != ''">
 								<img src="../downloaddoc.php?tabella=utenti&amp;tipo=avatar&amp;id={$dati_utente/id_utente}" style="margin-bottom: 20px;"/>
 								<br />
 							</xsl:if>

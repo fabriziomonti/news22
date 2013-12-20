@@ -89,15 +89,16 @@ class argomento extends street
 		{
 		$sql = "SELECT interventi.*," .
 			" utenti.nickname," . 
-			" utenti.avatar," . 
-			" IF(interventi.id_intervento_genitore, CONCAT(utenti_interventi_genitori.nickname, ' - ', DATE_FORMAT(interventi_genitori.data_ora_creazione, '%d/%m/%Y %H.%i.%s')), '') AS intervento_genitore" .
+			" utenti.avatar" . 
 			" FROM interventi" .
 			" INNER JOIN utenti ON interventi.id_utente=utenti.id_utente" .
-			" LEFT JOIN interventi AS interventi_genitori ON interventi.id_intervento_genitore=interventi_genitori.id_intervento" . 
-			" LEFT JOIN utenti AS utenti_interventi_genitori ON interventi_genitori.id_utente=utenti_interventi_genitori.id_utente" .
 			" WHERE NOT interventi.sospeso" .
 			" AND interventi.id_argomento=" . $dbconn->interoSql($_GET['id_argomento']) .
-			" ORDER BY interventi.data_ora_creazione";
+			" ORDER BY" .
+				" CASE" .
+					" WHEN interventi.chiave_ordinamento IS NULL THEN LPAD(interventi.id_intervento, 11, '0')" .
+					" ELSE CONCAT(interventi.chiave_ordinamento, '_', LPAD(interventi.id_intervento, 11, '0'))" .
+				" END";
 				
 		$pagina = intval($_GET['pag_interventi']);
 		$rs = $this->dammiRigheDB($sql, $dbconn, APPL_MAX_ARTICOLI_PAGINA, $pagina * APPL_MAX_ARTICOLI_PAGINA);
@@ -127,14 +128,15 @@ class argomento extends street
 	*/
 	function dammiRecordsetIntervento()
 		{
+		$id_intervento = $_GET['id_intervento_genitore'] ? $_GET['id_intervento_genitore'] : $_GET['id_intervento'];
 		$dbconn = $this->dammiConnessioneDB();
 		$sql = "SELECT interventi.*" .
 				" FROM interventi" .
-				" WHERE interventi.id_intervento=" . $dbconn->interoSql($_GET['id_intervento']) . 
+				" WHERE interventi.id_intervento=" . $dbconn->interoSql($id_intervento) . 
 				" AND NOT interventi.sospeso";
 			
-		$righeDB = $this->dammiRigheDB($sql, $dbconn, $_GET['id_intervento'] ? 1 : 0);
-		if ($_GET['id_intervento'] && !$righeDB->righe)
+		$righeDB = $this->dammiRigheDB($sql, $dbconn, $id_intervento ? 1 : 0);
+		if ($id_intervento && !$righeDB->righe)
 			$this->mostraMessaggio("Record non trovato", "Record non trovato", false, true);
 
 		return $righeDB;
@@ -148,17 +150,29 @@ class argomento extends street
 		
 		$riga = $this->modulo->righeDB->righe[0];
 			
+		if ($_GET['id_intervento_genitore'])
+			{
+			// stiamo inserendo una risposta ad un altro intervento
+			// definiamo la chiave genitore del nuovo record
+			$underscore = $riga->valore("chiave_ordinamento") ? '_' : '';
+			$chiave_ordinamento = $riga->valore("chiave_ordinamento") . $underscore . 
+								str_pad($_GET['id_intervento_genitore'], 11, '0', STR_PAD_LEFT);
+			if (strlen($chiave_ordinamento) > $this->modulo->righeDB->lunghezzaMaxCampo("chiave_ordinamento"))
+				$this->mostraMessaggio("Troppe nidificazioni", "Attenzione: il thread ha troppe nidificazioni; riiniziate!", false, true);
+				
+			$this->modulo->righeDB = $this->dammiRigheDB("SELECT * FROM interventi", $this->modulo->righeDB->connessioneDB, 0);
+			$riga = $this->modulo->righeDB->righe[0];
+			}
+		
 		if (!$riga)
 			{
 			if (!$this->haPrivilegio(PRIV_INTERVENTI_INSERIMENTO_PROPRI))
 				$this->checkPrivilegio(PRIV_INTERVENTI_INSERIMENTO);
 			$riga = $this->modulo->righeDB->aggiungi();
 			$riga->inserisciValore("data_ora_creazione", time());
-			
-			// inseriamo di default l'utente loggato; se l'utente ha i privilegi
-			// e ha definito un altro utente come proprietario del record,
-			// allora questo valore sara ridefinito durante $this->modulo->salva();
 			$riga->inserisciValore("id_utente", $this->utente['id_utente']);
+			$riga->inserisciValore("id_intervento_genitore", $_GET['id_intervento_genitore']);
+			$riga->inserisciValore("chiave_ordinamento", $chiave_ordinamento);
 			}
 		else 
 			{
@@ -174,12 +188,16 @@ class argomento extends street
 		$this->modulo->salva();
 		// controllo sanitario
 		$this->sanificaHTML($riga, "testo");
+		$dbconn = $this->modulo->righeDB->connessioneDB;
+		$dbconn->iniziaTransazione();
 		$this->salvaRigheDB($riga->righeDB);
 		$idInserito = $this->modulo->righeDB->connessioneDB->ultimoIdInserito();
 		
 		$this->creaRSSInterventi($this->modulo->righeDB->connessioneDB, $_GET['id_argomento']);
 		
 		$id_intervento = $idInserito ? $idInserito : $_GET['id_intervento'];
+		$dbconn->confermaTransazione();
+		
 		$this->ridireziona("argomento.php?id_argomento=$_GET[id_argomento]#intervento_$id_intervento");
 		}
 		

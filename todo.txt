@@ -1,1 +1,4 @@
+- backoffice: quando si modifica/inserisce un commento/intervento con genitore, occorre ricalcolarne la chiave di ordinamento
+- dopo inserimento/modifica commento occorre ricalcolare la pagina giusta a cui fare redirect
+
 

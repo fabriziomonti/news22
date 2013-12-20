@@ -335,7 +335,7 @@ interventi
 .elencoCommenti ,
 .elencoInterventi
 {
-	float:left;
+	float: right;
 	width: 99%;
 	padding:5px;
 	font-size: 0.8em;

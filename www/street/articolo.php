@@ -89,15 +89,16 @@ class articolo extends street
 		{
 		$sql = "SELECT commenti.*," .
 			" utenti.nickname," . 
-			" utenti.avatar," . 
-			" IF(commenti.id_commento_genitore, CONCAT(utenti_commenti_genitori.nickname, ' - ', DATE_FORMAT(commenti_genitori.data_ora_creazione, '%d/%m/%Y %H.%i.%s')), '') AS commento_genitore" .
+			" utenti.avatar" . 
 			" FROM commenti" .
 			" INNER JOIN utenti ON commenti.id_utente=utenti.id_utente" .
-			" LEFT JOIN commenti AS commenti_genitori ON commenti.id_commento_genitore=commenti_genitori.id_commento" . 
-			" LEFT JOIN utenti AS utenti_commenti_genitori ON commenti_genitori.id_utente=utenti_commenti_genitori.id_utente" .
 			" WHERE NOT commenti.sospeso" .
 			" AND commenti.id_articolo=" . $dbconn->interoSql($_GET['id_articolo']) .
-			" ORDER BY commenti.data_ora_creazione";
+			" ORDER BY" .
+				" CASE" .
+					" WHEN commenti.chiave_ordinamento IS NULL THEN LPAD(commenti.id_commento, 11, '0')" .
+					" ELSE CONCAT(commenti.chiave_ordinamento, '_', LPAD(commenti.id_commento, 11, '0'))" .
+				" END";
 				
 		$pagina = intval($_GET['pag_commenti']);
 		$rs = $this->dammiRigheDB($sql, $dbconn, APPL_MAX_ARTICOLI_PAGINA, $pagina * APPL_MAX_ARTICOLI_PAGINA);
@@ -127,14 +128,15 @@ class articolo extends street
 	*/
 	function dammiRecordsetCommento()
 		{
+		$id_commento = $_GET['id_commento_genitore'] ? $_GET['id_commento_genitore'] : $_GET['id_commento'];
 		$dbconn = $this->dammiConnessioneDB();
 		$sql = "SELECT commenti.*" .
 				" FROM commenti" .
-				" WHERE commenti.id_commento=" . $dbconn->interoSql($_GET['id_commento']) . 
+				" WHERE commenti.id_commento=" . $dbconn->interoSql($id_commento) . 
 				" AND NOT commenti.sospeso";
 			
-		$righeDB = $this->dammiRigheDB($sql, $dbconn, $_GET['id_commento'] ? 1 : 0);
-		if ($_GET['id_commento'] && !$righeDB->righe)
+		$righeDB = $this->dammiRigheDB($sql, $dbconn, $id_commento ? 1 : 0);
+		if ($id_commento && !$righeDB->righe)
 			$this->mostraMessaggio("Record non trovato", "Record non trovato", false, true);
 
 		return $righeDB;
@@ -148,17 +150,29 @@ class articolo extends street
 		
 		$riga = $this->modulo->righeDB->righe[0];
 			
+		if ($_GET['id_commento_genitore'])
+			{
+			// stiamo inserendo una risposta ad un altro commento
+			// definiamo la chiave genitore del nuovo record
+			$underscore = $riga->valore("chiave_ordinamento") ? '_' : '';
+			$chiave_ordinamento = $riga->valore("chiave_ordinamento") . $underscore . 
+								str_pad($_GET['id_commento_genitore'], 11, '0', STR_PAD_LEFT);
+			if (strlen($chiave_ordinamento) > $this->modulo->righeDB->lunghezzaMaxCampo("chiave_ordinamento"))
+				$this->mostraMessaggio("Troppe nidificazioni", "Attenzione: il thread ha troppe nidificazioni; riiniziate!", false, true);
+				
+			$this->modulo->righeDB = $this->dammiRigheDB("SELECT * FROM commenti", $this->modulo->righeDB->connessioneDB, 0);
+			$riga = $this->modulo->righeDB->righe[0];
+			}
+		
 		if (!$riga)
 			{
 			if (!$this->haPrivilegio(PRIV_COMMENTI_INSERIMENTO_PROPRI))
 				$this->checkPrivilegio(PRIV_COMMENTI_INSERIMENTO);
 			$riga = $this->modulo->righeDB->aggiungi();
 			$riga->inserisciValore("data_ora_creazione", time());
-			
-			// inseriamo di default l'utente loggato; se l'utente ha i privilegi
-			// e ha definito un altro utente come proprietario del record,
-			// allora questo valore sara ridefinito durante $this->modulo->salva();
 			$riga->inserisciValore("id_utente", $this->utente['id_utente']);
+			$riga->inserisciValore("id_commento_genitore", $_GET['id_commento_genitore']);
+			$riga->inserisciValore("chiave_ordinamento", $chiave_ordinamento);
 			}
 		else 
 			{
@@ -174,12 +188,17 @@ class articolo extends street
 		$this->modulo->salva();
 		// controllo sanitario
 		$this->sanificaHTML($riga, "testo");
+		$dbconn = $this->modulo->righeDB->connessioneDB;
+		$dbconn->iniziaTransazione();
 		$this->salvaRigheDB($riga->righeDB);
 		$idInserito = $this->modulo->righeDB->connessioneDB->ultimoIdInserito();
 		
 		$this->creaRSSCommenti($this->modulo->righeDB->connessioneDB, $_GET['id_articolo']);
 		
 		$id_commento = $idInserito ? $idInserito : $_GET['id_commento'];
+		$dbconn->confermaTransazione();
+		
+		// forse qui manca il calcolo della pagina
 		$this->ridireziona("articolo.php?id_articolo=$_GET[id_articolo]#commento_$id_commento");
 		}
 		
