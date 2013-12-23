@@ -46,13 +46,7 @@
 							<!--blocco dei commenti-->
 							<xsl:for-each select="pagina/elementi/elemento[nome='commenti']/valore/riga" >
 								<xsl:variable name="livello">
-									<xsl:choose>
-										<xsl:when test="string-length(chiave_ordinamento) = 0">0</xsl:when>
-										<xsl:when test="string-length(chiave_ordinamento) = 11">1</xsl:when>
-										<xsl:otherwise>
-											<xsl:value-of select="(string-length(chiave_ordinamento) - string-length(translate(chiave_ordinamento, '_', ''))) + 1" />
-										</xsl:otherwise>
-									</xsl:choose>
+									<xsl:value-of select="(string-length(chiave_ordinamento) - string-length(translate(chiave_ordinamento, '_', '')))" />
 								</xsl:variable>
 
 								<div class="elencoCommenti" style="width: {99 - $livello * 2}%; margin-left: {$livello * 2}%">

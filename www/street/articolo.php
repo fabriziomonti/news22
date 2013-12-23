@@ -46,7 +46,7 @@ class articolo extends street
 			$this->checkPrivilegio(PRIV_COMMENTI_ELIMINA, PRIV_COMMENTI_ELIMINA_PROPRI, $this->modulo->record);
 			$this->eliminaRecord($this->modulo->record, false);
 			$this->creaRSSCommenti($this->modulo->righeDB->connessioneDB, $_GET['id_articolo']);
-			$this->ridireziona("?id_articolo=$_GET[id_articolo]#commenti");
+			$this->ridireziona("?id_articolo=$_GET[id_articolo]&pag_commenti=$_GET[pag_commenti]#commenti");
 			}
 		else
 			{
@@ -94,11 +94,7 @@ class articolo extends street
 			" INNER JOIN utenti ON commenti.id_utente=utenti.id_utente" .
 			" WHERE NOT commenti.sospeso" .
 			" AND commenti.id_articolo=" . $dbconn->interoSql($_GET['id_articolo']) .
-			" ORDER BY" .
-				" CASE" .
-					" WHEN commenti.chiave_ordinamento IS NULL THEN LPAD(commenti.id_commento, 11, '0')" .
-					" ELSE CONCAT(commenti.chiave_ordinamento, '_', LPAD(commenti.id_commento, 11, '0'))" .
-				" END";
+			" ORDER BY commenti.chiave_ordinamento";
 				
 		$pagina = intval($_GET['pag_commenti']);
 		$rs = $this->dammiRigheDB($sql, $dbconn, APPL_MAX_ARTICOLI_PAGINA, $pagina * APPL_MAX_ARTICOLI_PAGINA);
@@ -154,12 +150,7 @@ class articolo extends street
 			{
 			// stiamo inserendo una risposta ad un altro commento
 			// definiamo la chiave genitore del nuovo record
-			$underscore = $riga->valore("chiave_ordinamento") ? '_' : '';
-			$chiave_ordinamento = $riga->valore("chiave_ordinamento") . $underscore . 
-								str_pad($_GET['id_commento_genitore'], 11, '0', STR_PAD_LEFT);
-			if (strlen($chiave_ordinamento) > $this->modulo->righeDB->lunghezzaMaxCampo("chiave_ordinamento"))
-				$this->mostraMessaggio("Troppe nidificazioni", "Attenzione: il thread ha troppe nidificazioni; riiniziate!", false, true);
-				
+			$chiave_ordinamento = $riga->valore("chiave_ordinamento") . "_";
 			$this->modulo->righeDB = $this->dammiRigheDB("SELECT * FROM commenti", $this->modulo->righeDB->connessioneDB, 0);
 			$riga = $this->modulo->righeDB->righe[0];
 			}
@@ -172,7 +163,6 @@ class articolo extends street
 			$riga->inserisciValore("data_ora_creazione", time());
 			$riga->inserisciValore("id_utente", $this->utente['id_utente']);
 			$riga->inserisciValore("id_commento_genitore", $_GET['id_commento_genitore']);
-			$riga->inserisciValore("chiave_ordinamento", $chiave_ordinamento);
 			}
 		else 
 			{
@@ -192,14 +182,39 @@ class articolo extends street
 		$dbconn->iniziaTransazione();
 		$this->salvaRigheDB($riga->righeDB);
 		$idInserito = $this->modulo->righeDB->connessioneDB->ultimoIdInserito();
-		
+		if ($idInserito)
+			{
+			// se è un nuovo record ne calcoliamo la sua chiave di ordinamento
+			$chiave_ordinamento .= str_pad($idInserito, 11, '0', STR_PAD_LEFT);
+			if (strlen($chiave_ordinamento) > $this->modulo->righeDB->lunghezzaMaxCampo("chiave_ordinamento"))
+				$this->mostraMessaggio("Troppe nidificazioni", "Attenzione: il thread ha troppe nidificazioni; riiniziate!", false, true);
+			$riga->inserisciValore("chiave_ordinamento", $chiave_ordinamento);
+			$this->salvaRigheDB($riga->righeDB);
+			$id_commento = $idInserito;
+			}
+		else
+			$id_commento = $_GET['id_commento'];
+			
+		// creazione del file rss
 		$this->creaRSSCommenti($this->modulo->righeDB->connessioneDB, $_GET['id_articolo']);
 		
-		$id_commento = $idInserito ? $idInserito : $_GET['id_commento'];
 		$dbconn->confermaTransazione();
 		
-		// forse qui manca il calcolo della pagina
-		$this->ridireziona("articolo.php?id_articolo=$_GET[id_articolo]#commento_$id_commento");
+		// calcolo della pagina a cui ridirigere
+		$max_ap = APPL_MAX_ARTICOLI_PAGINA;
+		$sql = "SELECT FLOOR(posizione / $max_ap) AS nr_pagina" .
+				" FROM" .
+					"(select @rownum:=@rownum+1 AS posizione, commenti.id_commento" .
+					" from commenti, (SELECT @rownum:=-1) r" .
+					" WHERE NOT commenti.sospeso" .
+					" AND commenti.id_articolo=" . $dbconn->interoSql($_GET['id_articolo']) .
+					" ORDER BY commenti.chiave_ordinamento" .
+					") AS p" .
+				" WHERE id_commento=" . $dbconn->interoSql($id_commento);
+		$rs = $this->dammiRigheDB($sql, $dbconn);
+		$nr_pagina =$rs->righe[0]->valore("nr_pagina");
+		
+		$this->ridireziona("articolo.php?id_articolo=$_GET[id_articolo]&pag_commenti=$nr_pagina#commento_$id_commento");
 		}
 		
 	

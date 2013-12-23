@@ -169,12 +169,12 @@ class ricerca extends street
 				" articoli.data_ora_inizio_pubblicazione," .
 				" categorie_articoli.nome as nome_categoria," .
 				" utenti.nickname," .
-				" @posizione := (select count(*) from commenti as c" .
+				" FLOOR(" .
+					" (select count(*) from commenti as c" .
 					" where not c.sospeso" .
 					" and c.id_articolo=commenti.id_articolo" .
-					" and c.data_ora_creazione<commenti.data_ora_creazione)" .
-					" AS posizione," .
-				" FLOOR(@posizione / $max_ap) AS nr_pagina" .
+					" and c.chiave_ordinamento<commenti.chiave_ordinamento)" .
+					" / $max_ap) AS nr_pagina" .
 				" FROM commenti" .
 				" INNER JOIN utenti ON commenti.id_utente=utenti.id_utente" .
 				" INNER JOIN articoli ON commenti.id_articolo=articoli.id_articolo" .
@@ -206,7 +206,7 @@ class ricerca extends street
 			$sql .= ")";
 			}
 			$sql .= " ORDER BY commenti.data_ora_creazione DESC";
-				
+//exit($sql);				
 		$pagina = intval($_GET['pag_commenti']);
 		$rs = $this->dammiRigheDB($sql, $dbconn, APPL_MAX_ARTICOLI_PAGINA, $pagina * APPL_MAX_ARTICOLI_PAGINA);
 		// strip dei testi (so che non è bello fatto così, prima o poi lo cambierò)
@@ -237,12 +237,12 @@ class ricerca extends street
 				" argomenti.data_ora_inizio_pubblicazione," .
 				" categorie_argomenti.nome as nome_categoria," .
 				" utenti.nickname," .
-				" @posizione := (select count(*) from interventi as c" .
+				" FLOOR(" .
+					" (select count(*) from interventi as c" .
 					" where not c.sospeso" .
 					" and c.id_argomento=interventi.id_argomento" .
-					" and c.data_ora_creazione<interventi.data_ora_creazione)" .
-					" AS posizione," .
-				" FLOOR(@posizione / $max_ap) AS nr_pagina" .
+					" and c.chiave_ordinamento<interventi.chiave_ordinamento)" .
+					" / $max_ap) AS nr_pagina" .
 				" FROM interventi" .
 				" INNER JOIN utenti ON interventi.id_utente=utenti.id_utente" .
 				" INNER JOIN argomenti ON interventi.id_argomento=argomenti.id_argomento" .

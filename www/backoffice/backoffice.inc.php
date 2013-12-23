@@ -252,7 +252,7 @@ class backoffice extends news22
 			$eliminaNuovo = true;
 			foreach ($id_privilegi_inserimento as $id_privilegio_inserimento)
 				{
-				if ($this->haPrivilegio($id_privilegio_inserimento_propri))
+				if ($this->haPrivilegio($id_privilegio_inserimento))
 					{
 					$eliminaNuovo = false;
 					break;

@@ -80,8 +80,25 @@ function eliminaIntervento(id_argomento, id_intervento)
 	
 	var form = document.getElementById("wamodulo");
 	form.onsubmit = "";
-	form.action = "?id_argomento=" + id_argomento + "&id_intervento=" + id_intervento;
+	form.action = "?id_argomento=" + id_argomento + 
+					"&pag_interventi=" + dammiNrPagina() +
+					"&id_intervento=" + id_intervento;
 	form.wamodulo_operazione.value = "4"; // richiesta cancellazione
 	form.submit();
+	}
+
+//-------------------------------------------------------------------------
+function dammiNrPagina()
+	{
+	var elems = location.search.split("&");
+	var ri_elems = [];
+	for (var li = 0; li < elems.length; li++)
+		{
+		ri_elems = elems[li].split("=");
+		if (ri_elems[0] == "pag_interventi")
+			return ri_elems[1];
+		}
+	
+	return '';
 	}
 

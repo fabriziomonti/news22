@@ -81,8 +81,25 @@ function eliminaCommento(id_articolo, id_commento)
 	
 	var form = document.getElementById("wamodulo");
 	form.onsubmit = "";
-	form.action = "?id_articolo=" + id_articolo + "&id_commento=" + id_commento;
+	form.action = "?id_articolo=" + id_articolo + 
+					"&pag_commenti=" + dammiNrPagina() +
+					"&id_commento=" + id_commento;
 	form.wamodulo_operazione.value = "4"; // richiesta cancellazione
 	form.submit();
+	}
+
+//-------------------------------------------------------------------------
+function dammiNrPagina()
+	{
+	var elems = location.search.split("&");
+	var ri_elems = [];
+	for (var li = 0; li < elems.length; li++)
+		{
+		ri_elems = elems[li].split("=");
+		if (ri_elems[0] == "pag_commenti")
+			return ri_elems[1];
+		}
+	
+	return '';
 	}
 

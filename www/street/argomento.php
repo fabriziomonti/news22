@@ -46,7 +46,7 @@ class argomento extends street
 			$this->checkPrivilegio(PRIV_INTERVENTI_ELIMINA, PRIV_INTERVENTI_ELIMINA_PROPRI, $this->modulo->record);
 			$this->eliminaRecord($this->modulo->record, false);
 			$this->creaRSSInterventi($this->modulo->righeDB->connessioneDB, $_GET['id_argomento']);
-			$this->ridireziona("?id_argomento=$_GET[id_argomento]#interventi");
+			$this->ridireziona("?id_argomento=$_GET[id_argomento]&pag_interventi=$_GET[pag_interventi]#interventi");
 			}
 		else
 			{
@@ -94,11 +94,7 @@ class argomento extends street
 			" INNER JOIN utenti ON interventi.id_utente=utenti.id_utente" .
 			" WHERE NOT interventi.sospeso" .
 			" AND interventi.id_argomento=" . $dbconn->interoSql($_GET['id_argomento']) .
-			" ORDER BY" .
-				" CASE" .
-					" WHEN interventi.chiave_ordinamento IS NULL THEN LPAD(interventi.id_intervento, 11, '0')" .
-					" ELSE CONCAT(interventi.chiave_ordinamento, '_', LPAD(interventi.id_intervento, 11, '0'))" .
-				" END";
+			" ORDER BY interventi.chiave_ordinamento";
 				
 		$pagina = intval($_GET['pag_interventi']);
 		$rs = $this->dammiRigheDB($sql, $dbconn, APPL_MAX_ARTICOLI_PAGINA, $pagina * APPL_MAX_ARTICOLI_PAGINA);
@@ -154,12 +150,7 @@ class argomento extends street
 			{
 			// stiamo inserendo una risposta ad un altro intervento
 			// definiamo la chiave genitore del nuovo record
-			$underscore = $riga->valore("chiave_ordinamento") ? '_' : '';
-			$chiave_ordinamento = $riga->valore("chiave_ordinamento") . $underscore . 
-								str_pad($_GET['id_intervento_genitore'], 11, '0', STR_PAD_LEFT);
-			if (strlen($chiave_ordinamento) > $this->modulo->righeDB->lunghezzaMaxCampo("chiave_ordinamento"))
-				$this->mostraMessaggio("Troppe nidificazioni", "Attenzione: il thread ha troppe nidificazioni; riiniziate!", false, true);
-				
+			$chiave_ordinamento = $riga->valore("chiave_ordinamento") . "_";
 			$this->modulo->righeDB = $this->dammiRigheDB("SELECT * FROM interventi", $this->modulo->righeDB->connessioneDB, 0);
 			$riga = $this->modulo->righeDB->righe[0];
 			}
@@ -172,7 +163,6 @@ class argomento extends street
 			$riga->inserisciValore("data_ora_creazione", time());
 			$riga->inserisciValore("id_utente", $this->utente['id_utente']);
 			$riga->inserisciValore("id_intervento_genitore", $_GET['id_intervento_genitore']);
-			$riga->inserisciValore("chiave_ordinamento", $chiave_ordinamento);
 			}
 		else 
 			{
@@ -192,13 +182,40 @@ class argomento extends street
 		$dbconn->iniziaTransazione();
 		$this->salvaRigheDB($riga->righeDB);
 		$idInserito = $this->modulo->righeDB->connessioneDB->ultimoIdInserito();
+		if ($idInserito)
+			{
+			// se è un nuovo record ne calcoliamo la sua chiave di ordinamento
+			$chiave_ordinamento .= str_pad($idInserito, 11, '0', STR_PAD_LEFT);
+			if (strlen($chiave_ordinamento) > $this->modulo->righeDB->lunghezzaMaxCampo("chiave_ordinamento"))
+				$this->mostraMessaggio("Troppe nidificazioni", "Attenzione: il thread ha troppe nidificazioni; riiniziate!", false, true);
+			$riga->inserisciValore("chiave_ordinamento", $chiave_ordinamento);
+			$this->salvaRigheDB($riga->righeDB);
+			$id_intervento = $idInserito;
+			}
+		else
+			$id_intervento = $_GET['id_intervento'];
+			
 		
+		// creazione del file rss
 		$this->creaRSSInterventi($this->modulo->righeDB->connessioneDB, $_GET['id_argomento']);
 		
-		$id_intervento = $idInserito ? $idInserito : $_GET['id_intervento'];
 		$dbconn->confermaTransazione();
 		
-		$this->ridireziona("argomento.php?id_argomento=$_GET[id_argomento]#intervento_$id_intervento");
+		// calcolo della pagina a cui ridirigere
+		$max_ap = APPL_MAX_ARTICOLI_PAGINA;
+		$sql = "SELECT FLOOR(posizione / $max_ap) AS nr_pagina" .
+				" FROM" .
+					"(select @rownum:=@rownum+1 AS posizione, interventi.id_intervento" .
+					" from interventi, (SELECT @rownum:=-1) r" .
+					" WHERE NOT interventi.sospeso" .
+					" AND interventi.id_argomento=" . $dbconn->interoSql($_GET['id_argomento']) .
+					" ORDER BY interventi.chiave_ordinamento" .
+					") AS p" .
+				" WHERE id_intervento=" . $dbconn->interoSql($id_intervento);
+		$rs = $this->dammiRigheDB($sql, $dbconn);
+		$nr_pagina =$rs->righe[0]->valore("nr_pagina");
+		
+		$this->ridireziona("argomento.php?id_argomento=$_GET[id_argomento]&pag_interventi=$nr_pagina#intervento_$id_intervento");
 		}
 		
 	
