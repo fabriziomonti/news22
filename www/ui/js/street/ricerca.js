@@ -32,3 +32,41 @@ function validaForm(form)
 	return true;
 	}
 
+//-------------------------------------------------------------------------
+function tutte_categorie_articoli_click(ctrl)
+	{
+	
+	var current = null;
+	for (var li = 0; li < ctrl.form.elements.length; li++)
+		{
+			
+		current = ctrl.form.elements[li];
+		
+		if (current.name.indexOf("id_categoria_articolo[") == 0)
+			{
+			current.checked = false;
+			current.disabled = ctrl.checked;
+			}
+		}
+		
+	}
+
+//-------------------------------------------------------------------------
+function tutte_categorie_argomenti_click(ctrl)
+	{
+	
+	var current = null;
+	for (var li = 0; li < ctrl.form.elements.length; li++)
+		{
+			
+		current = ctrl.form.elements[li];
+		
+		if (current.name.indexOf("id_categoria_argomento[") == 0)
+			{
+			current.checked = false;
+			current.disabled = ctrl.checked;
+			}
+		}
+		
+	}
+

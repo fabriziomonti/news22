@@ -36,7 +36,8 @@
 									<!--blocco articoli scritti dall'utente-->
 									<xsl:variable name="articoli" select="exsl:node-set(pagina/elementi/elemento[nome='articoli']/valore)" />
 									<div class="elencoArticoliUtente">
-										<h1>
+										<div style="width: 1px; color:transparent; font-size: 1px;">a</div>
+										<h1 id="label_testo_commento">
 											Articoli (<xsl:value-of select="$articoli/nr_righe_senza_limite" />)
 										</h1>
 
@@ -81,7 +82,8 @@
 									<!--blocco argomenti scritti dall'utente-->
 									<xsl:variable name="argomenti" select="exsl:node-set(pagina/elementi/elemento[nome='argomenti']/valore)" />
 									<div class="elencoArgomentiUtente">
-										<h1>
+										<div style="width: 1px; color:transparent; font-size: 1px;">a</div>
+										<h1 id="label_testo_commento">
 											Argomenti (<xsl:value-of select="$argomenti/nr_righe_senza_limite" />)
 										</h1>
 
@@ -126,7 +128,8 @@
 									<!--blocco commenti -->
 									<xsl:variable name="commenti" select="exsl:node-set(pagina/elementi/elemento[nome='commenti']/valore)" />
 									<div class="elencoCommentiUtente">
-										<h1>
+										<div style="width: 1px; color:transparent; font-size: 1px;">a</div>
+										<h1 id="label_testo_commento">
 											Commenti (<xsl:value-of select="$commenti/nr_righe_senza_limite" />)
 										</h1>
 
@@ -197,7 +200,8 @@
 									<!--blocco interventi -->
 									<xsl:variable name="interventi" select="exsl:node-set(pagina/elementi/elemento[nome='interventi']/valore)" />
 									<div class="elencoInterventiUtente">
-										<h1>
+										<div style="width: 1px; color:transparent; font-size: 1px;">a</div>
+										<h1 id="label_testo_commento">
 											Interventi (<xsl:value-of select="$interventi/nr_righe_senza_limite" />)
 										</h1>
 
@@ -287,8 +291,21 @@
 													checked
 												</xsl:attribute>
 											</xsl:if>
+											<xsl:if test="$request/tutte_categorie_articoli">
+												<xsl:attribute name="disabled">
+													disabled
+												</xsl:attribute>
+											</xsl:if>
 										</input>
 									</xsl:for-each>
+									Tutte
+									<input type="checkbox" name="tutte_categorie_articoli" onclick="tutte_categorie_articoli_click(this)">
+										<xsl:if test="$request/tutte_categorie_articoli">
+											<xsl:attribute name="checked">
+												checked
+											</xsl:attribute>
+										</xsl:if>
+									</input>
 								</div>	
 
 								<label>
@@ -306,8 +323,21 @@
 													checked
 												</xsl:attribute>
 											</xsl:if>
+											<xsl:if test="$request/tutte_categorie_argomenti">
+												<xsl:attribute name="disabled">
+													disabled
+												</xsl:attribute>
+											</xsl:if>
 										</input>
 									</xsl:for-each>
+									Tutte
+									<input type="checkbox" name="tutte_categorie_argomenti" onclick="tutte_categorie_argomenti_click(this)">
+										<xsl:if test="$request/tutte_categorie_argomenti">
+											<xsl:attribute name="checked">
+												checked
+											</xsl:attribute>
+										</xsl:if>
+									</input>
 								</div>	
 
 								<label>

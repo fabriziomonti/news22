@@ -43,6 +43,12 @@
 							<a name="commenti" />
 							</div><!-- id="articolo_blocco" -->
 
+							<!--bottoni di paginazione-->
+							<xsl:call-template name="bottoni_paginazione" >
+								<xsl:with-param name="rs" select="pagina/elementi/elemento[nome='commenti']/valore" />
+								<xsl:with-param name="anchor" select="'commenti'" />
+							</xsl:call-template>
+
 							<!--blocco dei commenti-->
 							<xsl:for-each select="pagina/elementi/elemento[nome='commenti']/valore/riga" >
 								<xsl:variable name="livello">
@@ -88,9 +94,11 @@
 									</xsl:if>
 
 									<!--306 = privilegio elimina tutti; 307 elimina propri-->
-									<xsl:if test="$dati_utente/supervisore = 1 or
+									<xsl:if test="tengo_famiglia = 0 and
+													($dati_utente/supervisore = 1 or
 													$dati_utente/privilegi/elemento_id_306 = 306 or 
-													($dati_utente/privilegi/elemento_id_307 = 307 and $dati_utente/id_utente = id_utente)">
+													($dati_utente/privilegi/elemento_id_307 = 307 and $dati_utente/id_utente = id_utente)
+													)">
 										<a href="javascript:eliminaCommento('{id_articolo}', '{id_commento}')">
 											<img src="../ui/img/street/Elimina.gif" style="float: right; margin-right: 8px;" alt="Elimina" title="Elimina" />
 										</a>										
@@ -114,7 +122,8 @@
 							</xsl:if>
 
 							<xsl:if test="$dati_utente">
-								<h1 id="label_testo_commento" style="display:inline">Inserisci un commento</h1>
+								<div style="width: 1px; color:transparent; font-size: 1px;">a</div>
+								<h1 id="label_testo_commento">Inserisci un commento</h1>
 								<xsl:if test="$dati_utente/privilegio_html_base = 1 and $dati_utente/privilegio_html_esteso = 0">	
 									(sono ammessi i tag HTML &lt;b&gt; &lt;u&gt; &lt;i&gt;)
 								</xsl:if>

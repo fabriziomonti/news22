@@ -41,6 +41,12 @@
 							<a name="interventi" />
 							</div><!-- id="argomento_blocco" -->
 
+							<!--bottoni di paginazione-->
+							<xsl:call-template name="bottoni_paginazione" >
+								<xsl:with-param name="rs" select="pagina/elementi/elemento[nome='interventi']/valore" />
+								<xsl:with-param name="anchor" select="'interventi'" />
+							</xsl:call-template>
+
 							<!--blocco degli interventi-->
 							<xsl:for-each select="pagina/elementi/elemento[nome='interventi']/valore/riga" >
 								<xsl:variable name="livello">
@@ -60,6 +66,7 @@
 
 									[ Pubblicato da: 
 									<a href='vedi_utente.php?id_utente={id_utente}' id='nickname_{id_intervento}'>
+										<xsl:value-of select="tengo_famiglia"/><br/>
 										<xsl:value-of select="nickname"/>
 									</a>
 									il: <xsl:value-of select="str:tokenize(data_ora_creazione, ' ')[1]"/>
@@ -86,9 +93,12 @@
 									</xsl:if>
 
 									<!--306 = privilegio elimina tutti; 307 elimina propri-->
-									<xsl:if test="$dati_utente/supervisore = 1 or
+									<xsl:if test="tengo_famiglia = 0 and
+													($dati_utente/supervisore = 1 or
 													$dati_utente/privilegi/elemento_id_506 = 506 or 
-													($dati_utente/privilegi/elemento_id_507 = 507 and $dati_utente/id_utente = id_utente)">
+													($dati_utente/privilegi/elemento_id_507 = 507 and $dati_utente/id_utente = id_utente)
+													)
+													">
 										<a href="javascript:eliminaIntervento('{id_argomento}', '{id_intervento}')">
 											<img src="../ui/img/street/Elimina.gif" style="float: right; margin-right: 4px;"/>
 										</a>										
@@ -112,7 +122,8 @@
 							</xsl:if>
 
 							<xsl:if test="$dati_utente">
-								<h1 id="label_testo_intervento" style="display:inline">Inserisci un intervento</h1>
+								<div style="width: 1px; color:transparent; font-size: 1px;">a</div>
+								<h1 id="label_testo_intervento">Inserisci un intervento</h1>
 								<xsl:if test="$dati_utente/privilegio_html_base = 1 and $dati_utente/privilegio_html_esteso = 0">	
 									(sono ammessi i tag HTML &lt;b&gt; &lt;u&gt; &lt;i&gt;)
 								</xsl:if>

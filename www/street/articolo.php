@@ -43,10 +43,7 @@ class articolo extends street
 			}
 		elseif ($this->modulo->daEliminare())
 			{
-			$this->checkPrivilegio(PRIV_COMMENTI_ELIMINA, PRIV_COMMENTI_ELIMINA_PROPRI, $this->modulo->record);
-			$this->eliminaRecord($this->modulo->record, false);
-			$this->creaRSSCommenti($this->modulo->righeDB->connessioneDB, $_GET['id_articolo']);
-			$this->ridireziona("?id_articolo=$_GET[id_articolo]&pag_commenti=$_GET[pag_commenti]#commenti");
+			$this->eliminaRecordCommenti();
 			}
 		else
 			{
@@ -87,9 +84,13 @@ class articolo extends street
 	//*************************************************************************
 	function dammiCommenti(waConnessioneDB $dbconn)
 		{
-		$sql = "SELECT commenti.*," .
+		$sql = "SELECT DISTINCT commenti.*," .
 			" utenti.nickname," . 
-			" utenti.avatar" . 
+			" utenti.avatar," . 
+			" (select count(*) from commenti as c" .
+				" WHERE not c.sospeso" .
+				" and c.id_commento_genitore=commenti.id_commento)" .
+				" AS tengo_famiglia" .
 			" FROM commenti" .
 			" INNER JOIN utenti ON commenti.id_utente=utenti.id_utente" .
 			" WHERE NOT commenti.sospeso" .
@@ -136,6 +137,25 @@ class articolo extends street
 			$this->mostraMessaggio("Record non trovato", "Record non trovato", false, true);
 
 		return $righeDB;
+		}
+		
+	//***************************************************************************
+	function eliminaRecordCommenti()
+		{
+		$this->checkPrivilegio(PRIV_COMMENTI_ELIMINA, PRIV_COMMENTI_ELIMINA_PROPRI, $this->modulo->record);
+		// occorre verificare che non tenga famiglia
+		$r = $this->modulo->record;
+		$dbconn = $this->modulo->righeDB->connessioneDB;
+		$sql = "select count(*) AS tengo_famiglia from commenti as c" .
+					" WHERE not c.sospeso" .
+					" and c.id_commento_genitore=" . $dbconn->interoSql($r->valore("id_commento"));
+		$rs = $this->dammiRigheDB($sql, $dbconn, 1);
+		if ($rs->righe[0]->valore("tengo_famiglia"))
+			$this->mostraMessaggio("Impossibile eliminare", "Il record è genitore in un thread", false, true);
+		$this->eliminaRecord($r, false);
+		$this->creaRSSCommenti($dbconn, $_GET['id_articolo']);
+		$this->ridireziona("?id_articolo=$_GET[id_articolo]&pag_commenti=$_GET[pag_commenti]#commenti");
+		
 		}
 		
 	//***************************************************************************

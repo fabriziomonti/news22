@@ -43,10 +43,7 @@ class argomento extends street
 			}
 		elseif ($this->modulo->daEliminare())
 			{
-			$this->checkPrivilegio(PRIV_INTERVENTI_ELIMINA, PRIV_INTERVENTI_ELIMINA_PROPRI, $this->modulo->record);
-			$this->eliminaRecord($this->modulo->record, false);
-			$this->creaRSSInterventi($this->modulo->righeDB->connessioneDB, $_GET['id_argomento']);
-			$this->ridireziona("?id_argomento=$_GET[id_argomento]&pag_interventi=$_GET[pag_interventi]#interventi");
+			$this->eliminaRecordInterventi();
 			}
 		else
 			{
@@ -89,7 +86,11 @@ class argomento extends street
 		{
 		$sql = "SELECT interventi.*," .
 			" utenti.nickname," . 
-			" utenti.avatar" . 
+			" utenti.avatar," . 
+			" (select count(*) from interventi as c" .
+				" WHERE not c.sospeso" .
+				" and c.id_intervento_genitore=interventi.id_intervento)" .
+				" AS tengo_famiglia" .
 			" FROM interventi" .
 			" INNER JOIN utenti ON interventi.id_utente=utenti.id_utente" .
 			" WHERE NOT interventi.sospeso" .
@@ -136,6 +137,25 @@ class argomento extends street
 			$this->mostraMessaggio("Record non trovato", "Record non trovato", false, true);
 
 		return $righeDB;
+		}
+		
+	//***************************************************************************
+	function eliminaRecordInterventi()
+		{
+		$this->checkPrivilegio(PRIV_INTERVENTI_ELIMINA, PRIV_INTERVENTI_ELIMINA_PROPRI, $this->modulo->record);
+		// occorre verificare che non tenga famiglia
+		$r = $this->modulo->record;
+		$dbconn = $this->modulo->righeDB->connessioneDB;
+		$sql = "select count(*) AS tengo_famiglia from interventi as c" .
+					" WHERE not c.sospeso" .
+					" and c.id_intervento_genitore=" . $dbconn->interoSql($r->valore("id_intervento"));
+		$rs = $this->dammiRigheDB($sql, $dbconn, 1);
+		if ($rs->righe[0]->valore("tengo_famiglia"))
+			$this->mostraMessaggio("Impossibile eliminare", "Il record è genitore in un thread", false, true);
+		$this->eliminaRecord($r, false);
+		$this->creaRSSInterventi($dbconn, $_GET['id_argomento']);
+		$this->ridireziona("?id_argomento=$_GET[id_argomento]&pag_interventi=$_GET[pag_interventi]#interventi");
+		
 		}
 		
 	//***************************************************************************

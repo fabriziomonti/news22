@@ -28,7 +28,7 @@ class ricerca extends street
 	//*************************************************************************
 	function dammiArticoli(waConnessioneDB $dbconn)
 		{
-		if (!$_GET['id_categoria_articolo'])
+		if (!$_GET['id_categoria_articolo'] && !$_GET['tutte_categorie_articoli'])
 			return;
 		
 		$sql = "SELECT articoli.id_articolo," .
@@ -92,7 +92,7 @@ class ricerca extends street
 	//*************************************************************************
 	function dammiArgomenti(waConnessioneDB $dbconn)
 		{
-		if (!$_GET['id_categoria_argomento'])
+		if (!$_GET['id_categoria_argomento'] && !$_GET['tutte_categorie_argomenti'])
 			return;
 		
 		$sql = "SELECT argomenti.id_argomento," .

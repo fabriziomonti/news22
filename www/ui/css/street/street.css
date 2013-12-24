@@ -104,7 +104,6 @@ a:hover {
 
 h1 {
 	font-size: 1.2em;
-	
 }
 
 h2 {
@@ -327,8 +326,8 @@ interventi
 	font-size: 0.8em;
 	color: #333333;
 	background-color: #DDDDDD;
-	margin: 0px 0px 15px 0px;
-		border-radius:10px 10px 10px 10px;
+	margin: 15px 0px 15px 0px;
+	border-radius:10px 10px 10px 10px;
 	-moz-border-radius:10px 10px 10px 10px;
 	}
 
@@ -498,7 +497,8 @@ div.bottoni_paginazione
 	float:left;
 	width: 99%;
 	padding:5px;
-	margin-bottom: 20px;
+	font-size: 14px;
+	margin-top: -8px;
 }
 
 div.pagina_precedente
@@ -509,4 +509,12 @@ div.pagina_precedente
 div.pagina_successiva
 {
 	float: right;
+	text-align: right;
+}
+
+h1#label_testo_commento,
+h1#label_testo_intervento
+{
+	margin-top: 20px; 
+	margin-bottom: 0px;
 }

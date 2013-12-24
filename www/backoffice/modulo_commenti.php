@@ -165,11 +165,23 @@ class modulo_commenti extends backoffice
 		$this->modulo->salva();
 		// controllo sanitario
 		$this->sanificaHTML($riga, "testo");
+		$dbconn = $this->modulo->righeDB->connessioneDB;
+		$dbconn->iniziaTransazione();
 		$this->salvaRigheDB($riga->righeDB);
 		$idInserito = $this->modulo->righeDB->connessioneDB->ultimoIdInserito();
+		if ($idInserito)
+			{
+			// se è un nuovo record ne calcoliamo la sua chiave di ordinamento
+			$chiave_ordinamento = $this->dammiChiaveOrdinamentoGenitore($riga) . str_pad($idInserito, 11, '0', STR_PAD_LEFT);
+			if (strlen($chiave_ordinamento) > $this->modulo->righeDB->lunghezzaMaxCampo("chiave_ordinamento"))
+				$this->mostraMessaggio("Troppe nidificazioni", "Attenzione: il thread ha troppe nidificazioni; riiniziate!", false, true);
+			$riga->inserisciValore("chiave_ordinamento", $chiave_ordinamento);
+			$this->salvaRigheDB($riga->righeDB);
+			}
 		
 		$this->creaRSSCommenti($this->modulo->righeDB->connessioneDB, $riga->valore("id_articolo"));
 		
+		$dbconn->confermaTransazione();
 		$valoriRitorno = $idInserito ? array_merge(array("idInserito" => $idInserito), $this->modulo->input) : $this->modulo->input;
 		$this->ritorna($valoriRitorno);
 		}
@@ -207,6 +219,23 @@ class modulo_commenti extends backoffice
 		return $retval;
 		
 		}
+		
+	//***************************************************************************
+	/**
+	 */
+	function dammiChiaveOrdinamentoGenitore(waRecord $riga)
+		{
+		if (!$riga->valore("id_commento_genitore"))
+			return '';
+		
+		$dbconn = $riga->righeDB->connessioneDB;
+		$sql = "SELECT commenti.chiave_ordinamento" .
+						" FROM commenti" .
+						" WHERE commenti.id_commento=" . $dbconn->interoSql($riga->valore("id_commento_genitore")) ;
+		return $this->dammiRigheDB($sql, $dbconn, 1)->righe[0]->valore(0) . "_";
+		}
+		
+		
 	//*****************************************************************************
 	}
 		

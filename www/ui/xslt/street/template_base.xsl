@@ -379,6 +379,7 @@
 	<xsl:param name="descr_azione" />
 
 	<!-- Login -->
+	<div style="width: 1px; color:transparent; font-size: 1px;">a</div>
 	<h1>Login</h1>
 	<div class="articolo_blocco">
 		<p>
@@ -462,6 +463,10 @@
 				<a href="{$uri_senza_nr_pag}{$qoe}pag_{$rs/../nome}={$rs/nr_pagina - 1}#{$anchor}">
 					&lt;&lt; Precedenti
 				</a>
+				<br/>
+				<a href="{$uri_senza_nr_pag}{$qoe}pag_{$rs/../nome}={0}#{$anchor}">
+					&lt;&lt;&lt;&lt; Prima pagina
+				</a>
 			</div>
 		</xsl:if>
 
@@ -478,6 +483,10 @@
 			<div class="pagina_successiva">
 				<a href="{$uri_senza_nr_pag}{$qoe}pag_{$rs/../nome}={$rs/nr_pagina + 1}#{$anchor}">
 					Successivi &gt;&gt;
+				</a>
+				<br/>
+				<a href="{$uri_senza_nr_pag}{$qoe}pag_{$rs/../nome}={$tot_pagine - 1}#{$anchor}">
+					Ultima pagina &gt;&gt;&gt;&gt;
 				</a>
 			</div>
 		</xsl:if>
