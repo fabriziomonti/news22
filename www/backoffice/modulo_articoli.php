@@ -93,7 +93,7 @@ class modulo_articoli extends backoffice
 		
 		if ($riga)
 			$this->modulo->aggiungiDataOra("data_ora_creazione", "Data/Ora creazione", true);
-		$this->modulo->aggiungiDataOra("data_ora_inizio_pubblicazione", "Data/Ora inizio pubblicazione", $solaLettura);
+		$this->modulo->aggiungiDataOra("data_ora_inizio_pubblicazione", "Data/Ora inizio pubblicazione", $solaLettura)->valore = time();
 		$this->modulo->aggiungiDataOra("data_ora_fine_pubblicazione", "Data/Ora fine pubblicazione", $solaLettura);
 		$this->modulo->aggiungiAreaTesto("tags", "Tags", $solaLettura);
 

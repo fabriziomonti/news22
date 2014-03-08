@@ -195,6 +195,7 @@
 					theme_advanced_toolbar_align : "left",
 					theme_advanced_buttons3_add : "fullscreen,save,cancel",
 					theme_advanced_statusbar_location : "none",
+					theme_advanced_disable: "styleselect",
 					editor_selector: "mceEditor"
 					}
 				);

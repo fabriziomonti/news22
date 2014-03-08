@@ -9,7 +9,7 @@
 	<xsl:call-template name="intestazione_controllo"/>
 	
 	<div class="wamodulo_areatesto_ext">
-		<textarea name='{@id}' class="mceEditor">
+		<textarea name='{@id}' id='{@id}' class="mceEditor">
 			<xsl:call-template name="dammiattributicontrollo"/>
 			<xsl:attribute name="class">mceEditor</xsl:attribute>
 			<xsl:value-of select="valore"/>		

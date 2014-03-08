@@ -48,6 +48,10 @@ class index extends street
 				
 		$pagina = intval($_GET['pag_articoli']);
 		$rs = $this->dammiRigheDB($sql, $dbconn, APPL_MAX_ARTICOLI_PAGINA, $pagina * APPL_MAX_ARTICOLI_PAGINA);
+		
+		// se non esiste ancora il file rss lo creiamo
+		if (!file_exists("$this->directoryDoc/rss/$this->fileRSSArticoli"))
+			$this->creaRSSArticoli($dbconn);
 
 		$buffer = $this->rs2XML($rs, $pagina);
 		

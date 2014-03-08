@@ -421,7 +421,7 @@ class news22 extends waApplicazione
 			{
 			// password vuota: da mandare via email
 			$this->inviaMailCredenziali($rigaUtente);
-			$this->mostraMessaggioOk ("Credenziali inviate", "Le credenziali sono state inviate all'indirizzo email indicato.");
+			$this->mostraMessaggio("Credenziali inviate", "Le credenziali sono state inviate all'indirizzo email indicato.");
 			}
 			
 		if ($this->decryptPassword($rigaUtente->valore("pwd")) != $modulo->input["pwd"])
@@ -742,18 +742,17 @@ class news22 extends waApplicazione
 		
 		foreach ($rs->righe as $riga)
 			{
-			$link = "http://$this->dominio$this->httpwd/street/articolo.php?id_articolo=" . $riga->valore("id_articolo");
+			$link = "http://$this->dominio$this->httpwd/street/articolo.php?id_articolo=$riga->id_articolo";
 			$xml .= "<item>\n" .
-						"<title>" . htmlentities($riga->valore("titolo")) . "</title>\n" .
+						"<title><![CDATA[$riga->titolo]]></title>\n" .
       					"<link>$link</link>\n" .
-      					"<description>" . htmlentities($riga->valore("abstract")) . "</description>\n" .
-      					"<content:encoded><![CDATA[<i>" . 
-												$riga->valore("abstract") .
-												"</i><p />" .
-												$riga->valore("testo") . 
-												"]]></content:encoded>\n" .
-					    "<pubDate>" . gmdate("r", $riga->valore("data_ora_inizio_pbblicazione")) . "</pubDate>\n" .
+      					"<description><![CDATA[$riga->abstract]]></description>\n" .
+      					"<content:encoded><![CDATA[<i>$riga->abstract</i><p />$riga->testo]]></content:encoded>\n" .
+					    "<pubDate>" . gmdate("r", $riga->data_ora_inizio_pubblicazione) . "</pubDate>\n" .
       					"<guid isPermaLink='true'>$link</guid>\n" .
+					    "<author>" . 
+						    "<name>$riga->nickname</name>\n" .
+					    "</author>\n" . 
 						"</item>\n";
 			}
 			
@@ -770,7 +769,7 @@ class news22 extends waApplicazione
 		{
 		$sql = "select titolo from articoli where id_articolo=" . $dbconn->interoSql($id_articolo);
 		$rigaArticolo = $this->dammiRigheDB($sql, $dbconn, 1)->righe[0];
-		$titolo = strip_tags($rigaArticolo->valore("titolo"));
+		$titolo = strip_tags($rigaArticolo->titolo);
 		$titolo = substr($titolo, 0, 50) . (strlen($titolo) > 50 ? "..." : '');
 		$xml = "<?xml version='1.0' encoding='UTF-8'?>\n" .
 					"<rss version='2.0' xmlns:content='http://purl.org/rss/1.0/modules/content/'>\n" .
@@ -789,45 +788,49 @@ class news22 extends waApplicazione
 					"<link>http://$this->dominio$this->httpwd</link>\n" .
 					"</image>\n";
 
+		$max_ap = APPL_MAX_ARTICOLI_PAGINA;
 		$sql = "SELECT commenti.*," .
 			" utenti.nickname," . 
 			" cg.data_ora_creazione AS data_ora_creazione_genitore," .
-			" ug.nickname AS nickname_genitore" .
+			" ug.nickname AS nickname_genitore," .
+				" FLOOR(" .
+					" (select count(*) from commenti as c" .
+					" where not c.sospeso" .
+					" and c.id_articolo=commenti.id_articolo" .
+					" and c.chiave_ordinamento<commenti.chiave_ordinamento)" .
+					" / $max_ap) AS nr_pagina" .
 			" FROM commenti" .
 			" INNER JOIN utenti ON commenti.id_utente=utenti.id_utente" .
 			// cg = commento genitore
 			" LEFT JOIN commenti AS cg ON commenti.id_commento_genitore=cg.id_commento" .
 			" LEFT JOIN utenti AS ug ON cg.id_utente=ug.id_utente" .
 			" WHERE NOT commenti.sospeso" .
-			" AND commenti.id_articolo=" . $dbconn->interoSql($id_articolo);
+			" AND commenti.id_articolo=" . $dbconn->interoSql($id_articolo) .
 			" ORDER BY commenti.id_commento DESC";
 		
 		$rs = $this->dammiRigheDB($sql, $dbconn, 50, 0);
 		
 		foreach ($rs->righe as $riga)
 			{
-			$link = "http://$this->dominio$this->httpwd/street/articolo.php?id_articolo=$id_articolo#commento_" . $riga->valore("id_commento");
-			$titolo = strip_tags($riga->valore("testo"));
+			$link = "http://$this->dominio$this->httpwd/street/articolo.php?id_articolo=$id_articolo&amp;pag_commenti=$riga->nr_pagina#commento_$riga->id_commento";
+			$titolo = strip_tags($riga->testo);
 			$titolo = substr($titolo, 0, 50) . (strlen($titolo) > 50 ? "..." : '');
-			$dati_genitore = $riga->valore("nickname_genitore") ? 
+			$dati_genitore = $riga->nickname_genitore ? 
 								"<i>(in risposta al commento di " .
-									$riga->valore("nickname_genitore") . 
-									" del " . date("d/m/Y", $riga->valore("data_ora_creazione_genitore")) .
-									" alle " . date("H.i.s", $riga->valore("data_ora_creazione_genitore")) .
+									$riga->nickname_genitore . 
+									" del " . date("d/m/Y", $riga->data_ora_creazione_genitore) .
+									" alle " . date("H.i.s", $riga->data_ora_creazione_genitore) .
 									")</i><br/><br/>" 
 									: '';
 			$xml .= "<item>\n" .
-						"<title>$titolo</title>\n" .
+						"<title><![CDATA[$titolo]]></title>\n" .
       					"<link>$link</link>\n" .
       					"<description></description>\n" .
-      					"<content:encoded><![CDATA[" . 
-												$dati_genitore .
-												$riga->valore("testo") . 
-												"]]></content:encoded>\n" .
-					    "<pubDate>" . gmdate("r", $riga->valore("data_ora_creazione")) . "</pubDate>\n" .
+      					"<content:encoded><![CDATA[$dati_genitore $riga->testo]]></content:encoded>\n" .
+					    "<pubDate>" . gmdate("r", $riga->data_ora_creazione) . "</pubDate>\n" .
       					"<guid isPermaLink='true'>$link</guid>\n" .
 					    "<author>" . 
-					    "<name>" . $riga->valore("nickname") . "</name>\n" .
+						    "<name>$riga->nickname</name>\n" .
 					    "</author>\n" . 
 						"</item>\n";
 			}
@@ -845,7 +848,7 @@ class news22 extends waApplicazione
 		{
 		$sql = "select titolo from argomenti where id_argomento=" . $dbconn->interoSql($id_argomento);
 		$rigaArgomento = $this->dammiRigheDB($sql, $dbconn, 1)->righe[0];
-		$titolo = strip_tags($rigaArgomento->valore("titolo"));
+		$titolo = strip_tags($rigaArgomento->titolo);
 		$titolo = substr($titolo, 0, 50) . (strlen($titolo) > 50 ? "..." : '');
 		$xml = "<?xml version='1.0' encoding='UTF-8'?>\n" .
 					"<rss version='2.0' xmlns:content='http://purl.org/rss/1.0/modules/content/'>\n" .
@@ -864,10 +867,17 @@ class news22 extends waApplicazione
 					"<link>http://$this->dominio$this->httpwd</link>\n" .
 					"</image>\n";
 
+		$max_ap = APPL_MAX_ARTICOLI_PAGINA;
 		$sql = "SELECT interventi.*," .
 			" utenti.nickname," . 
 			" ig.data_ora_creazione AS data_ora_creazione_genitore," .
-			" ug.nickname AS nickname_genitore" .
+			" ug.nickname AS nickname_genitore," .
+				" FLOOR(" .
+					" (select count(*) from interventi as c" .
+					" where not c.sospeso" .
+					" and c.id_argomento=interventi.id_argomento" .
+					" and c.chiave_ordinamento<interventi.chiave_ordinamento)" .
+					" / $max_ap) AS nr_pagina" .
 			" FROM interventi" .
 			" INNER JOIN utenti ON interventi.id_utente=utenti.id_utente" .
 			// ig = intervento genitore
@@ -881,28 +891,24 @@ class news22 extends waApplicazione
 		
 		foreach ($rs->righe as $riga)
 			{
-			$link = "http://$this->dominio$this->httpwd/street/argomento.php?id_argomento=$id_argomento#intervento_" . $riga->valore("id_intervento");
-			$titolo = strip_tags($riga->valore("testo"));
+			$link = "http://$this->dominio$this->httpwd/street/argomento.php?id_argomento=$id_argomento&amp;pag_interventi=$riga->nr_pagina#intervento_$riga->id_intervento";
+			$titolo = strip_tags($riga->testo);
 			$titolo = substr($titolo, 0, 50) . (strlen($titolo) > 50 ? "..." : '');
-			$dati_genitore = $riga->valore("nickname_genitore") ? 
-								"<i>(in risposta all' intervento di " .
-									$riga->valore("nickname_genitore") . 
-									" del " . date("d/m/Y", $riga->valore("data_ora_creazione_genitore")) .
-									" alle " . date("H.i.s", $riga->valore("data_ora_creazione_genitore")) .
+			$dati_genitore = $riga->nickname_genitore ? 
+								"<i>(in risposta all' intervento di $riga->nickname_genitore" . 
+									" del " . date("d/m/Y", $riga->data_ora_creazione_genitore) .
+									" alle " . date("H.i.s", $riga->data_ora_creazione_genitore) .
 									")</i><br/><br/>" 
 									: '';
 			$xml .= "<item>\n" .
-						"<title>$titolo</title>\n" .
+						"<title><![CDATA[$titolo]]></title>\n" .
       					"<link>$link</link>\n" .
       					"<description></description>\n" .
-      					"<content:encoded><![CDATA[" . 
-												$dati_genitore .
-												$riga->valore("testo") . 
-												"]]></content:encoded>\n" .
-					    "<pubDate>" . gmdate("r", $riga->valore("data_ora_creazione")) . "</pubDate>\n" .
+      					"<content:encoded><![CDATA[$dati_genitore $riga->testo]]></content:encoded>\n" .
+					    "<pubDate>" . gmdate("r", $riga->data_ora_creazione) . "</pubDate>\n" .
       					"<guid isPermaLink='true'>$link</guid>\n" .
 					    "<author>" . 
-					    "<name>" . $riga->valore("nickname") . "</name>\n" .
+						    "<name>$riga->nickname</name>\n" .
 					    "</author>\n" . 
 						"</item>\n";
 			}

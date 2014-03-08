@@ -19,51 +19,6 @@ var backoffice = new Class
 		this.parent();
 				
 		document.onkeyup = function onkeyup(event) {document.wapagina.intercettaEsc(event);}
-		
-		// se abbiamo un modulo che contiene controlli areatesto_ext (tiny_mce)
-		// allora inizializziamo l'ambiente tiny_mce
-		this.check_init_tiny_mce();
-
-		},
-	
-	//-------------------------------------------------------------------------
-	//initialization
-	check_init_tiny_mce: function()
-		{
-		
-		// se abbiamo un modulo che contiene controlli areatesto_ext (tiny_mce)
-		// allora inizializziamo l'ambiente tiny_mce
-		if (!this.modulo)
-			return;
-		
-		var ctrls_at_ext = {};
-		for (var li in this.modulo.controlli)
-			{
-			if (this.modulo.controlli[li].tipo == "areatesto_ext")
-				ctrls_at_ext[li] = this.modulo.controlli[li];
-			}
-		
-		if (this.dizionarioVuoto(ctrls_at_ext))
-			return;
-		
-		tinyMCE.init
-			(
-				{
-				theme : "advanced",
-				mode : "specific_textareas",
-				//plugins : "fullpage", non usare!!! mette body!
-				plugins : "safari,fullscreen, table",
-				//plugins : "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,imagemanager,filemanager",
-				content_css : "finto.css",
-				theme_advanced_toolbar_location : "top",
-				theme_advanced_toolbar_align : "left",
-//				save_oncancelcallback: "myCloseServiceWin",
-				theme_advanced_buttons3_add : "fullscreen,save,cancel",
-				theme_advanced_statusbar_location : "none",
-				editor_selector: "mceEditor"
-				}
-			);
-
 		},
 	
 	//-------------------------------------------------------------------------

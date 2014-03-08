@@ -47,6 +47,10 @@ class argomento extends street
 			}
 		else
 			{
+			// se non esiste ancora il file rss lo creiamo
+			if (!file_exists("$this->directoryDoc/rss/$this->fileRSSInterventi.$_GET[id_argomento].xml"))
+				$this->creaRSSInterventi($dbconn, $_GET['id_argomento']);
+
 			$this->mostra();
 			}
 		

@@ -47,6 +47,10 @@ class articolo extends street
 			}
 		else
 			{
+			// se non esiste ancora il file rss lo creiamo
+			if (!file_exists("$this->directoryDoc/rss/$this->fileRSSCommenti.$_GET[id_articolo].xml"))
+				$this->creaRSSCommenti($dbconn, $_GET['id_articolo']);
+
 			$this->mostra();
 			}
 		

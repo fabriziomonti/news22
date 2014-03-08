@@ -8,6 +8,65 @@
 <xsl:decimal-format decimal-separator=","  grouping-separator="." /> 
 
 <!-- ********************************************************************** -->
+<!-- template delle azioni su pagina -->
+<!-- ********************************************************************** -->
+<xsl:template match="watabella_azioni_pagina">
+		<xsl:for-each select="azione">
+			<button type='button' name='{nome}' id='{nome}' title='{etichetta}' value='{etichetta}' onclick='document.{/watabella/nome}.azione_{/watabella/nome}_{nome}()'>
+				<xsl:value-of disable-output-escaping="yes" select="etichetta"/>
+			</button>
+		</xsl:for-each>
+		
+		<!--bottoni di esportazione-->
+		<xsl:variable name="qoe">
+			<xsl:choose>
+				<xsl:when test="contains(/watabella/uri, '?')">&amp;</xsl:when>
+				<xsl:otherwise>?</xsl:otherwise>
+			</xsl:choose>	
+		</xsl:variable>
+		<xsl:text>&#10;</xsl:text>
+		
+</xsl:template>
+
+<!-- ********************************************************************** -->
+<!-- template barra di navigazione -->
+<!-- ********************************************************************** -->
+<xsl:template match="watabella_barra_navigazione">
+
+	<xsl:variable name="qoe">
+		<xsl:choose>
+			<xsl:when test="contains(/watabella/uri, '?')">&amp;</xsl:when>
+			<xsl:otherwise>?</xsl:otherwise>
+		</xsl:choose>	
+ 	</xsl:variable>
+
+ 	<table style='width: 100%' class='watabella'>
+		<tr>
+			<td style='width: 20%; text-align: left'>
+				<xsl:if test="nr_pagina_corrente &gt; 0">
+					<xsl:variable name="pag_prec" select="concat(/watabella/uri, $qoe, 'watbl_pg[', /watabella/nome, ']=', nr_pagina_corrente -1)" />
+					<button type='button' name='paginaprecedente' id='paginaprecedente' title='Pagina precedente' value='&lt;&lt; Pagina precedente' onclick='document.{/watabella/nome}.cambiaPagina("{nr_pagina_corrente - 1}")'>
+						&lt;&lt; Pagina precedente
+					</button><xsl:text>&#10;</xsl:text>
+				</xsl:if>
+			</td>
+			<td style='width: 60%; text-align: center'>
+				pagina <xsl:value-of select="nr_pagina_corrente + 1"/> di <xsl:value-of select="totale_pagine"/>
+				-
+				registrazioni dalla <xsl:value-of select="primo_record"/> alla <xsl:value-of select="ultimo_record"/> di <xsl:value-of select="totale_record"/>
+			</td>
+			<td style='width: 20%; text-align: right'>
+				<xsl:if test="nr_pagina_corrente &lt; totale_pagine - 1">
+					<button type='button' name='paginasuccessiva' id='paginasuccessiva' title='Pagina successiva' value='Pagina successiva &gt;&gt;' onclick='document.{/watabella/nome}.cambiaPagina("{nr_pagina_corrente + 1}")'>
+						Pagina successiva &gt;&gt;
+					</button><xsl:text>&#10;</xsl:text>
+				</xsl:if>
+			</td>
+		</tr>
+	</table>
+</xsl:template>
+
+<!-- ********************************************************************** -->
 <!-- template creazione degli oggetti javascript                            -->
 <!-- ********************************************************************** -->
 <xsl:template name="crea_oggetti_javascript">
