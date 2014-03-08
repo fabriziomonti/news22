@@ -1,4 +1,4 @@
-<?
+<?php
 include "backoffice.inc.php";
 
 $appl = new backoffice();

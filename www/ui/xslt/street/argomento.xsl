@@ -152,7 +152,9 @@
 
 					</div><!-- id="colonnaSx" -->
 					
-					<xsl:call-template name="pagina_footer" />
+					<xsl:call-template name="pagina_footer">
+						<xsl:with-param name="id_argomento" select="$argomento/id_argomento" />
+					</xsl:call-template>
 	
 				</div><!-- id="contenitore" -->
 			

@@ -174,8 +174,27 @@
 <!--  template footer -->
 <!-- *********************************************************************** -->
 <xsl:template name="pagina_footer">
+	<xsl:param name="id_articolo" />
+	<xsl:param name="id_argomento" />
 	
 	<div id="footer">
+		<a href='../web_files/rss/articoli.xml'>
+			<img src="../ui/img/street/rss.png" border="0" alt="Articoli di {/waapplicazione/titolo}" title="Articoli di {/waapplicazione/titolo}" />
+		</a>
+		<xsl:if test="$id_articolo">
+			<!--siamo nella pagina dell"articolo: occorre aggiungere anche il link -->
+			<!--all"rss dei commenti-->
+			<a href="../web_files/rss/commenti.{$id_articolo}.xml">
+				<img src="../ui/img/street/rss.png" border="0" alt="Commenti all'articolo di {/waapplicazione/titolo}" title="Commenti all'articolo di {/waapplicazione/titolo}" />
+			</a>
+		</xsl:if>
+		<xsl:if test="$id_argomento">
+			<!--siamo nella pagina dell'argomento del forum: occorre aggiungere anche il link -->
+			<!--all'rss degli interventi-->
+			<a href="../web_files/rss/interventi.{$id_argomento}.xml">
+				<img src="../ui/img/street/rss.png" border="0" alt="Interventi di {/waapplicazione/titolo}" title="Interventi di {/waapplicazione/titolo}" />
+			</a>
+		</xsl:if>
 	</div><!-- footer -->
 
 	<!--caricamento javascript vari-->
