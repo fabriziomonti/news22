@@ -17,6 +17,19 @@
 			<script type='text/javascript' src='{waapplicazione_path}/uis/wa_default/js/moo1.2.js'></script><xsl:text>&#10;</xsl:text>
 			<script type='text/javascript' src='{waapplicazione_path}/uis/wa_default/js/waapplicazione.js'></script><xsl:text>&#10;</xsl:text>
 			
+			<!--js fancybox-->
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><xsl:text>&#10;</xsl:text>
+			<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.pack.js"></script><xsl:text>&#10;</xsl:text>
+			<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.easing-1.4.pack.js"></script><xsl:text>&#10;</xsl:text>
+			<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.mousewheel-3.0.4.pack.js"></script><xsl:text>&#10;</xsl:text>
+			<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.css" type="text/css" media="screen" /><xsl:text>&#10;</xsl:text>
+			
+			<!--siccome usiamo sia mootols che jquery, jquery deve essere chiamato per esteso-->
+			<script type="text/javascript">
+				jQuery.noConflict();			
+			</script>
+			<xsl:text>&#10;</xsl:text>
+			
 		    <title>
 		    	<xsl:value-of select="titolo" />
 		    </title>
@@ -37,8 +50,9 @@
 			<!-- se lavoriamo con navigazione interna creiamo anche l'iframe destinato a contenere la finestra figlia-->
 			<xsl:text>&#10;</xsl:text>
 			<xsl:if test="modalita_navigazione = '3'">
-				<iframe id='waapplicazione_iframe_figlia' class='waapplicazione_iframe_figlia' style='visibility:hidden'>
-				</iframe>
+				<!--	<iframe id='waapplicazione_iframe_figlia' class='waapplicazione_iframe_figlia' style='visibility:hidden'>
+				</iframe>-->
+				<a class="iframe" id="fb_iframe" href="" style="display:none;"></a>
 			</xsl:if>
 	
 			<!-- creazione degli elementi costitutivi della pagina (titolo, tabelle, moduli, testo libero, ecc.-->
@@ -117,6 +131,17 @@
 		<xsl:value-of disable-output-escaping="yes" select="valore" />
 	</div>
 	<xsl:text>&#10;</xsl:text>
+</xsl:template>
+
+<!-- ********************************************************************** -->
+<!-- template boh -->
+<!-- ********************************************************************** -->
+<xsl:template match="pagina/elementi/elemento[nome = 'dati_versione']">
+	<div class="waapplicazione_dati_versione">
+		<xsl:value-of select="/waapplicazione/titolo" />
+		- <xsl:value-of select="valore/nr" />
+		- <xsl:value-of select="valore/data" />
+	</div>
 </xsl:template>
 
 <!-- ********************************************************************** -->

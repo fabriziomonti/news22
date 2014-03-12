@@ -161,11 +161,11 @@ class modulo_articoli extends backoffice
 		$this->salvaRigheDB($riga->righeDB);
 		$idInserito = $this->modulo->righeDB->connessioneDB->ultimoIdInserito();
 		$this->creaRSSArticoli($this->modulo->righeDB->connessioneDB);
+		$this->mailNuovoArticolo($idInserito ? $idInserito : $riga->id_articolo, $this->modulo->righeDB->connessioneDB);
 		
 		$valoriRitorno = $idInserito ? array_merge(array("idInserito" => $idInserito), $this->modulo->input) : $this->modulo->input;
 		$this->ritorna($valoriRitorno);
 		}
-		
 	
 	//*****************************************************************************
 	}

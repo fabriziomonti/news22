@@ -66,7 +66,6 @@
 
 									[ Pubblicato da: 
 									<a href='vedi_utente.php?id_utente={id_utente}' id='nickname_{id_intervento}'>
-										<xsl:value-of select="tengo_famiglia"/><br/>
 										<xsl:value-of select="nickname"/>
 									</a>
 									il: <xsl:value-of select="str:tokenize(data_ora_creazione, ' ')[1]"/>

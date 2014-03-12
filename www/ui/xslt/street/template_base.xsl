@@ -38,7 +38,8 @@
 		<!--caricamento dei css specifici di applicazione e pagina-->
 		<xsl:variable name="ui_dir" select="/waapplicazione/pagina/elementi/elemento[nome='ui_dir']/valore" />
 		<link href="{$ui_dir}/css/street/street.css" rel="stylesheet" type="text/css" />
-		<link href="{$ui_dir}/css/street/{pagina/nome}.css" rel="stylesheet" type="text/css" />
+		<link href="{$ui_dir}/css/street/{pagina/nome}.css" rel="stylesheet" type="text/css" /><xsl:text>&#10;</xsl:text>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><xsl:text>&#10;</xsl:text>
 	</head>
 </xsl:template>
 
@@ -177,23 +178,36 @@
 	<xsl:param name="id_articolo" />
 	<xsl:param name="id_argomento" />
 	
+	<xsl:variable name="dati_utente" select="exsl:node-set(/waapplicazione/pagina/elementi/elemento[nome='dati_utente']/valore)" />
+	
 	<div id="footer">
-		<a href='../web_files/rss/articoli.xml'>
-			<img src="../ui/img/street/rss.png" border="0" alt="Articoli di {/waapplicazione/titolo}" title="Articoli di {/waapplicazione/titolo}" />
-		</a>
+		<a name="footer"></a>
+		<img src="../ui/img/street/rss.png" onclick="location.href='../web_files/rss/articoli.xml'" border="0" alt="Articoli di {/waapplicazione/titolo}" title="Articoli di {/waapplicazione/titolo}" />
 		<xsl:if test="$id_articolo">
-			<!--siamo nella pagina dell"articolo: occorre aggiungere anche il link -->
-			<!--all"rss dei commenti-->
-			<a href="../web_files/rss/commenti.{$id_articolo}.xml">
-				<img src="../ui/img/street/rss.png" border="0" alt="Commenti all'articolo di {/waapplicazione/titolo}" title="Commenti all'articolo di {/waapplicazione/titolo}" />
-			</a>
+			<!--siamo nella pagina dell"articolo: occorre aggiungere anche il link all'rss dei commenti-->
+			<img src="../ui/img/street/rss.png" border="0" onclick="location.href='../web_files/rss/commenti.{$id_articolo}.xml'" alt="Commenti all'articolo di {/waapplicazione/titolo}" title="Commenti all'articolo di {/waapplicazione/titolo}" />
+			<xsl:if test="$dati_utente/id_utente != ''">
+				<!-- se l'utente è loggato diamo anche l'icona per la sottoscrizione via email -->
+				<xsl:if test="/waapplicazione/pagina/elementi/elemento[nome = 'articolo']/valore/riga/flag_sottoscrizione_via_email = 0">
+					<img src="../ui/img/street/email.png" onclick="sottoscriviCommentiViaMail({$id_articolo})" alt="Ricevi via email i commenti di questo articolo di {/waapplicazione/titolo}" title="Ricevi via email i commenti di questo articolo di {/waapplicazione/titolo}" />
+				</xsl:if>
+				<xsl:if test="/waapplicazione/pagina/elementi/elemento[nome = 'articolo']/valore/riga/flag_sottoscrizione_via_email = 1">
+					<img src="../ui/img/street/noemail.png" onclick="smollaCommentiViaMail({$id_articolo})" alt="Termina di ricevere via email i commenti di questo articolo di {/waapplicazione/titolo}" title="Termina di ricevere via email i commenti di questo articolo di {/waapplicazione/titolo}" />
+				</xsl:if>
+			</xsl:if>
 		</xsl:if>
 		<xsl:if test="$id_argomento">
-			<!--siamo nella pagina dell'argomento del forum: occorre aggiungere anche il link -->
-			<!--all'rss degli interventi-->
-			<a href="../web_files/rss/interventi.{$id_argomento}.xml">
-				<img src="../ui/img/street/rss.png" border="0" alt="Interventi di {/waapplicazione/titolo}" title="Interventi di {/waapplicazione/titolo}" />
-			</a>
+			<!--siamo nella pagina dell'argomento del forum: occorre aggiungere anche il link all'rss degli interventi-->
+			<img src="../ui/img/street/rss.png" onclick="location.href='../web_files/rss/interventi.{$id_argomento}.xml'" border="0" alt="Interventi di {/waapplicazione/titolo}" title="Interventi di {/waapplicazione/titolo}" />
+			<xsl:if test="$dati_utente/id_utente != ''">
+				<!-- se l'utente è loggato diamo anche l'icona per la sottoscrizione via email -->
+				<xsl:if test="/waapplicazione/pagina/elementi/elemento[nome = 'argomento']/valore/riga/flag_sottoscrizione_via_email = 0">
+					<img src="../ui/img/street/email.png" onclick="sottoscriviInterventiViaMail({$id_argomento})" alt="Ricevi via email gli interventi di questo argomento di {/waapplicazione/titolo}" title="Ricevi via email i commenti di questo argomento di {/waapplicazione/titolo}" />
+				</xsl:if>
+				<xsl:if test="/waapplicazione/pagina/elementi/elemento[nome = 'argomento']/valore/riga/flag_sottoscrizione_via_email = 1">
+					<img src="../ui/img/street/noemail.png" onclick="smollaInterventiViaMail({$id_argomento})" alt="Termina di ricevere via email gli interventi di questo argomento di {/waapplicazione/titolo}" title="Termina di ricevere via email gli interventi di questo argomento di {/waapplicazione/titolo}" />
+				</xsl:if>
+			</xsl:if>
 		</xsl:if>
 	</div><!-- footer -->
 

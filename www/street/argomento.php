@@ -62,11 +62,14 @@ class argomento extends street
 		$sql = "SELECT argomenti.*," .
 				" categorie_argomenti.nome as nome_categoria," .
 				" utenti.nickname," .
+				" if(sottoscrizioni_via_email.id_argomento, 1, 0) as flag_sottoscrizione_via_email," .
 				" COUNT(interventi.id_intervento) AS nr_interventi" . 
 				" FROM argomenti" .
 				" INNER JOIN categorie_argomenti ON argomenti.id_categoria_argomento=categorie_argomenti.id_categoria_argomento" .
 				" INNER JOIN utenti ON argomenti.id_utente=utenti.id_utente" .
 				" LEFT JOIN interventi ON argomenti.id_argomento=interventi.id_argomento AND NOT interventi.sospeso" .
+				" LEFT JOIN sottoscrizioni_via_email ON argomenti.id_argomento=sottoscrizioni_via_email.id_argomento" .
+					" AND sottoscrizioni_via_email.id_utente=" . $dbconn->interoSql($this->utente["id_utente"]) .
 				" WHERE NOT argomenti.sospeso" .
 				" AND argomenti.data_ora_inizio_pubblicazione<=NOW()" .
 				" AND (argomenti.data_ora_fine_pubblicazione>=NOW() OR argomenti.data_ora_fine_pubblicazione IS NULL)" .
@@ -222,6 +225,7 @@ class argomento extends street
 		
 		// creazione del file rss
 		$this->creaRSSInterventi($this->modulo->righeDB->connessioneDB, $_GET['id_argomento']);
+		$this->mailNuovoIntervento($riga->id_argomento, $idInserito, $this->modulo->righeDB->connessioneDB);
 		
 		$dbconn->confermaTransazione();
 		

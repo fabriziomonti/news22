@@ -93,6 +93,8 @@ class modulo_interventi extends backoffice
 		$this->modulo->giustificaControllo($ctrl, false);
 		if ($riga)
 			$ctrl->sql = $this->dammiSqlInterventiGenitori ($riga->valore("id_argomento"));
+		elseif ($_GET['id_argomento'])
+			$ctrl->sql = $this->dammiSqlInterventiGenitori ($_GET['id_argomento']);
 		
 		$this->aggiungiAreaTesto_ext($this->modulo, "testo", "Testo", $solaLettura, true);
 		
@@ -175,7 +177,8 @@ class modulo_interventi extends backoffice
 			$this->salvaRigheDB($riga->righeDB);
 			}
 		
-		$this->creaRSSInterventi($this->modulo->righeDB->connessioneDB, $riga->valore("id_argomento"));
+		$this->creaRSSInterventi($this->modulo->righeDB->connessioneDB, $riga->id_argomento);
+		$this->mailNuovoIntervento($riga->id_argomento, $idInserito, $this->modulo->righeDB->connessioneDB);
 		
 		$dbconn->confermaTransazione();
 		$valoriRitorno = $idInserito ? array_merge(array("idInserito" => $idInserito), $this->modulo->input) : $this->modulo->input;

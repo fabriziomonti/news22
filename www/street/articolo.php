@@ -62,11 +62,14 @@ class articolo extends street
 		$sql = "SELECT articoli.*," .
 				" categorie_articoli.nome as nome_categoria," .
 				" utenti.nickname," .
+				" if(sottoscrizioni_via_email.id_articolo, 1, 0) as flag_sottoscrizione_via_email," .
 				" COUNT(commenti.id_commento) AS nr_commenti" . 
 				" FROM articoli" .
 				" INNER JOIN categorie_articoli ON articoli.id_categoria_articolo=categorie_articoli.id_categoria_articolo" .
 				" INNER JOIN utenti ON articoli.id_utente=utenti.id_utente" .
 				" LEFT JOIN commenti ON articoli.id_articolo=commenti.id_articolo AND NOT commenti.sospeso" .
+				" LEFT JOIN sottoscrizioni_via_email ON articoli.id_articolo=sottoscrizioni_via_email.id_articolo" .
+					" AND sottoscrizioni_via_email.id_utente=" . $dbconn->interoSql($this->utente["id_utente"]) .
 				" WHERE NOT articoli.sospeso" .
 				" AND articoli.data_ora_inizio_pubblicazione<=NOW()" .
 				" AND (articoli.data_ora_fine_pubblicazione>=NOW() OR articoli.data_ora_fine_pubblicazione IS NULL)" .
@@ -221,6 +224,7 @@ class articolo extends street
 			
 		// creazione del file rss
 		$this->creaRSSCommenti($this->modulo->righeDB->connessioneDB, $_GET['id_articolo']);
+		$this->mailNuovoCommento($riga->id_articolo, $idInserito, $this->modulo->righeDB->connessioneDB);
 		
 		$dbconn->confermaTransazione();
 		
@@ -241,7 +245,6 @@ class articolo extends street
 		$this->ridireziona("articolo.php?id_articolo=$_GET[id_articolo]&pag_commenti=$nr_pagina#commento_$id_commento");
 		}
 		
-	
 	//*****************************************************************************
 	}
 	

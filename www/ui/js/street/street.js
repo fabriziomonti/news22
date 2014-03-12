@@ -15,3 +15,52 @@ function check_email(form)
 
 	return true;
 	}
+
+//-------------------------------------------------------------------------
+function sottoscriviCommentiViaMail(id_articolo)
+	{
+	
+	if (!confirm("Confermi di volere ricevere via email i nuovi commenti su questo articolo di News22?"))
+		{
+		return false;
+		}
+		
+	location.href = "sottoscrivi.php?azione=sottoscrivi&id_articolo=" + id_articolo;
+	}
+
+//-------------------------------------------------------------------------
+function smollaCommentiViaMail(id_articolo)
+	{
+	
+	if (!confirm("Confermi di volere terminare di ricevere via email i nuovi commenti su questo articolo di News22?"))
+		{
+		return false;
+		}
+		
+	location.href = "sottoscrivi.php?azione=smolla&id_articolo=" + id_articolo;
+	}
+
+//-------------------------------------------------------------------------
+function sottoscriviInterventiViaMail(id_argomento)
+	{
+	
+	if (!confirm("Confermi di volere ricevere via email i nuovi interventi su questo argomento di News22?"))
+		{
+		return false;
+		}
+		
+	location.href = "sottoscrivi.php?azione=sottoscrivi&id_argomento=" + id_argomento;
+	}
+
+//-------------------------------------------------------------------------
+function smollaInterventiViaMail(id_argomento)
+	{
+	
+	if (!confirm("Confermi di volere terminare di ricevere via email i nuovi interventi su questo argomento di News22?"))
+		{
+		return false;
+		}
+		
+	location.href = "sottoscrivi.php?azione=smolla&id_argomento=" + id_argomento;
+	}
+

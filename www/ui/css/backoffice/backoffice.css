@@ -60,3 +60,10 @@ div.waapplicazione_messaggio_errore form
 	}	
 	
 	
+div.waapplicazione_dati_versione	
+	{
+	margin-top: 20px;
+	margin-right: 2px;
+	text-align: right;
+	font-style: italic;
+	}

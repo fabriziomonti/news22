@@ -88,7 +88,7 @@ class modulo_argomenti extends backoffice
 		
 		if ($riga)
 			$this->modulo->aggiungiDataOra("data_ora_creazione", "Data/Ora creazione", true);
-		$this->modulo->aggiungiDataOra("data_ora_inizio_pubblicazione", "Data/Ora inizio pubblicazione", $solaLettura);
+		$this->modulo->aggiungiDataOra("data_ora_inizio_pubblicazione", "Data/Ora inizio pubblicazione", $solaLettura)->valore = time();
 		$this->modulo->aggiungiDataOra("data_ora_fine_pubblicazione", "Data/Ora fine pubblicazione", $solaLettura);
 		$this->modulo->aggiungiAreaTesto("tags", "Tags", $solaLettura);
 
@@ -154,6 +154,7 @@ class modulo_argomenti extends backoffice
 		$this->sanificaHTML($riga, "abstract");
 		$this->salvaRigheDB($riga->righeDB);
 		$idInserito = $this->modulo->righeDB->connessioneDB->ultimoIdInserito();
+		$this->mailNuovoArgomento($idInserito ? $idInserito : $riga->id_argomento, $this->modulo->righeDB->connessioneDB);
 		
 		$valoriRitorno = $idInserito ? array_merge(array("idInserito" => $idInserito), $this->modulo->input) : $this->modulo->input;
 		$this->ritorna($valoriRitorno);

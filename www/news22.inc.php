@@ -87,6 +87,9 @@ class news22 extends waApplicazione
 		$this->datiSessione = &$_SESSION[$this->nome];
 		$this->utente = &$this->datiSessione['utente'];
 		
+		// leggiamo la casella dei commenti via email
+//		$this->leggiPop3();
+		
 		}
 	
 	//*****************************************************************************
@@ -313,6 +316,9 @@ class news22 extends waApplicazione
 		// pagina
 		$this->creaDocumentazione();
 
+		$dati_versione = array("nr" => $this->versione, "data" => date("d/m/Y", $this->dataVersione));
+		$this->aggiungiElemento($this->array2xml($dati_versione), "dati_versione", "XML");
+		
 		if (defined("APPL_DEBUG") && $_GET['xml'] == 1)
 			{
 			$this->mostraXML(); 
@@ -939,6 +945,217 @@ class news22 extends waApplicazione
 		return $testo;
 		}
 
+	//*****************************************************************************
+	/**
+	 * leggiamo eventuale messaggio destinato ai commenti/interventi
+	 */
+	function leggiPop3()
+		{
+		include dirname(__FILE__) . "/pop3.class.php";
+		
+		$pop = new my_pop3("pop3.test.webappls.com", "110", "news22list@test.webappls.com", "rm004029");
+		if (!$pop->pop3_login())
+			return;
+		
+		$stat = $pop->pop3_stat();
+		
+		}
+		
+	//***************************************************************************
+	function mailNuovoArticolo($id_articolo, waConnessioneDB $dbconn)
+		{
+		if (!$id_articolo)
+			return;
+		
+		$sql = "SELECT articoli.*," .
+			" categorie_articoli.nome as nome_categoria," .
+			" utenti.nickname" . 
+			" FROM articoli" .
+			" INNER JOIN categorie_articoli ON articoli.id_categoria_articolo=categorie_articoli.id_categoria_articolo" .
+			" INNER JOIN utenti ON articoli.id_utente=utenti.id_utente" .
+			" WHERE articoli.id_articolo=" . $dbconn->interoSql($id_articolo) .
+			" AND articoli.data_ora_inizio_pubblicazione<=NOW()" .
+			" AND (articoli.data_ora_fine_pubblicazione>=NOW() OR articoli.data_ora_fine_pubblicazione IS NULL)";
+		$riga = $this->dammiRigheDB($sql, $dbconn)->righe[0];
+		if (!$riga)
+			return;
+		
+		$sql = "select utenti.email" .
+					" from utenti" . 
+					" where not sospeso" .
+					" and flag_sottoscrizione_articoli_via_email";
+		$destinatari = $this->dammiRigheDB($sql, $dbconn)->righe;
+		if (!$destinatari)
+			return;
+		
+		$subject = "Nuovo articolo di $this->titolo";
+		$body = "Categoria:\n$riga->nome_categoria\n\n" .
+				"Autore:\n$riga->nickname\n\n" .
+				"Titolo:\n" . $this->stripCampo($riga->titolo) . "\n\n" .
+				"Abstract:\n" . $this->stripCampo($riga->abstract) . "\n\n" .
+				"Testo:\n" . $this->stripCampo($riga->testo) . "\n\n";
+		
+		$body .= "-------\n\n" .
+				"Se non vuoi più ricevere queste email collegati al sito" .
+				" http://$this->dominio$this->httpwd, effettua il login, entra" .
+				" nel tuo profilo e deseleziona l'opzione di invio mail per ogni" .
+				" nuovo articolo.";
+		
+		foreach ($destinatari as $destinatario)
+			$bcc[] = $destinatario->email;
+		
+		$this->mandaMail(null, $subject, $body, null, null, $bcc);
+		
+		
+		}
+		
+	//***************************************************************************
+	function mailNuovoCommento($id_articolo, $id_commento, waConnessioneDB $dbconn)
+		{
+		if (!$id_articolo || !$id_commento)
+			return;
+		
+		$sql = "SELECT commenti.*," .
+			" articoli.titolo AS titolo_articolo," .
+			" utenti.nickname," . 
+			" IF(commenti.id_commento_genitore, CONCAT(utenti_commenti_genitori.nickname, ' - ', DATE_FORMAT(commenti_genitori.data_ora_creazione, '%d/%m/%Y %H.%i.%s')), '') AS commento_genitore" .
+			" FROM commenti" .
+			" INNER JOIN articoli ON commenti.id_articolo=articoli.id_articolo" .
+			" INNER JOIN utenti ON commenti.id_utente=utenti.id_utente" .
+			" LEFT JOIN commenti AS commenti_genitori ON commenti.id_commento_genitore=commenti_genitori.id_commento" . 
+			" LEFT JOIN utenti AS utenti_commenti_genitori ON commenti_genitori.id_utente=utenti_commenti_genitori.id_utente" .
+			" WHERE NOT commenti.sospeso" .
+			" AND commenti.id_commento=" . $dbconn->interoSql($id_commento);
+		$riga = $this->dammiRigheDB($sql, $dbconn, 1)->righe[0];
+		if (!$riga)
+			return;
+
+		$sql = "select utenti.email" .
+					" from sottoscrizioni_via_email" . 
+					" join utenti on sottoscrizioni_via_email.id_utente=utenti.id_utente" .
+					" where not sottoscrizioni_via_email.sospeso" .
+					" and not utenti.sospeso" .
+					" and sottoscrizioni_via_email.id_articolo=" . $dbconn->interoSql($id_articolo);
+		$destinatari = $this->dammiRigheDB($sql, $dbconn)->righe;
+		if (!$destinatari)
+			return;
+		
+		$subject = "Nuovo commento di $this->titolo";
+		$body = "Articolo:\n" . $this->stripCampo($riga->titolo_articolo) . "\n\n" .
+				"Autore commento:\n$riga->nickname\n\n" .
+				($riga->commento_genitore ? "In risposta a:\n$riga->commento_genitore\n\n" : '') .
+				"Testo commento:\n" . $this->stripCampo($riga->testo) . "\n\n";
+		
+		$body .= "-------\n\n" .
+				"Se non vuoi più ricevere queste email collegati al sito" .
+				" http://$this->dominio$this->httpwd, effettua il login, entra" .
+				" nella pagina dell'articolo e deseleziona" .
+				" l'invio mail per ogni nuovo commento.";
+		
+		foreach ($destinatari as $destinatario)
+			$bcc[] = $destinatario->email;
+		
+		$this->mandaMail(null, $subject, $body, null, null, $bcc);
+		
+		
+		}
+		
+	//***************************************************************************
+	function mailNuovoArgomento($id_argomento, waConnessioneDB $dbconn)
+		{
+		if (!$id_argomento)
+			return;
+		
+		$sql = "SELECT argomenti.*," .
+			" categorie_argomenti.nome as nome_categoria," .
+			" utenti.nickname" . 
+			" FROM argomenti" .
+			" INNER JOIN categorie_argomenti ON argomenti.id_categoria_argomento=categorie_argomenti.id_categoria_argomento" .
+			" INNER JOIN utenti ON argomenti.id_utente=utenti.id_utente" .
+			" WHERE argomenti.id_argomento=" . $dbconn->interoSql($id_argomento) .
+			" AND argomenti.data_ora_inizio_pubblicazione<=NOW()" .
+			" AND (argomenti.data_ora_fine_pubblicazione>=NOW() OR argomenti.data_ora_fine_pubblicazione IS NULL)";
+		$riga = $this->dammiRigheDB($sql, $dbconn, 1)->righe[0];
+		if (!$riga)
+			return;
+
+		$sql = "select utenti.email" .
+					" from utenti" . 
+					" where not sospeso" .
+					" and flag_sottoscrizione_argomenti_via_email";
+		$destinatari = $this->dammiRigheDB($sql, $dbconn)->righe;
+		if (!$destinatari)
+			return;
+		
+		$subject = "Nuovo argomento di $this->titolo";
+		$body = "Categoria:\n$riga->nome_categoria\n\n" .
+				"Autore:\n$riga->nickname\n\n" .
+				"Titolo:\n" . $this->stripCampo($riga->titolo) . "\n\n" .
+				"Abstract:\n" . $this->stripCampo($riga->abstract) . "\n\n" ;
+		
+		$body .= "-------\n\n" .
+				"Se non vuoi più ricevere queste email collegati al sito" .
+				" http://$this->dominio$this->httpwd, effettua il login, entra" .
+				" nel tuo profilo e deseleziona l'opzione di invio mail per ogni" .
+				" nuovo argomento.";
+		
+		foreach ($destinatari as $destinatario)
+			$bcc[] = $destinatario->email;
+		
+		$this->mandaMail(null, $subject, $body, null, null, $bcc);
+		}
+		
+	//***************************************************************************
+	function mailNuovoIntervento($id_argomento, $id_intervento, waConnessioneDB $dbconn)
+		{
+		if (!$id_argomento || !$id_intervento)
+			return;
+		
+		$sql = "SELECT interventi.*," .
+			" argomenti.titolo AS titolo_argomento," .
+			" utenti.nickname," . 
+			" IF(interventi.id_intervento_genitore, CONCAT(utenti_interventi_genitori.nickname, ' - ', DATE_FORMAT(interventi_genitori.data_ora_creazione, '%d/%m/%Y %H.%i.%s')), '') AS intervento_genitore" .
+			" FROM interventi" .
+			" INNER JOIN argomenti ON interventi.id_argomento=argomenti.id_argomento" .
+			" INNER JOIN utenti ON interventi.id_utente=utenti.id_utente" .
+			" LEFT JOIN interventi AS interventi_genitori ON interventi.id_intervento_genitore=interventi_genitori.id_intervento" . 
+			" LEFT JOIN utenti AS utenti_interventi_genitori ON interventi_genitori.id_utente=utenti_interventi_genitori.id_utente" .
+			" WHERE NOT interventi.sospeso" .
+			" AND interventi.id_intervento=" . $dbconn->interoSql($id_intervento);
+		$riga = $this->dammiRigheDB($sql, $dbconn, 1)->righe[0];
+		if (!$riga)
+			return;
+		
+		$sql = "select utenti.email" .
+					" from sottoscrizioni_via_email" . 
+					" join utenti on sottoscrizioni_via_email.id_utente=utenti.id_utente" .
+					" where not sottoscrizioni_via_email.sospeso" .
+					" and not utenti.sospeso" .
+					" and sottoscrizioni_via_email.id_argomento=" . $dbconn->interoSql($id_argomento);
+		$destinatari = $this->dammiRigheDB($sql, $dbconn)->righe;
+		if (!$destinatari)
+			return;
+		
+		$subject = "Nuovo intervento di $this->titolo";
+		$body = "Argomento:\n" . $this->stripCampo($riga->titolo_argomento) . "\n\n" .
+				"Autore intervento:\n$riga->nickname\n\n" .
+				($riga->intervento_genitore ? "In risposta a:\n$riga->intervento_genitore\n\n" : '') .
+				"Testo intervento:\n" . $this->stripCampo($riga->testo) . "\n\n";
+		
+		$body .= "-------\n\n" .
+				"Se non vuoi più ricevere queste email collegati al sito" .
+				" http://$this->dominio$this->httpwd, effettua il login, entra" .
+				" nella pagina dell'argomento e deseleziona" .
+				" l'invio mail per ogni nuovo intervento.";
+		
+		foreach ($destinatari as $destinatario)
+			$bcc[] = $destinatario->email;
+		
+		$this->mandaMail(null, $subject, $body, null, null, $bcc);
+		
+		
+		}
+		
 //***************************************************************************
 	} 	// fine classe news22
 	

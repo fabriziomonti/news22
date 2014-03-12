@@ -76,6 +76,28 @@
 										<textarea class="mceEditor" name="descrizione"><xsl:value-of select="$dati_utente/descrizione" /></textarea>
 									</div>
 
+									<label>Inviami nuovi articoli via email</label>
+									<div class="campo">
+										<input type="checkbox" name="flag_sottoscrizione_articoli_via_email" >
+											<xsl:if test="$dati_utente/flag_sottoscrizione_articoli_via_email = 1">
+												<xsl:attribute name="checked">
+													checked
+												</xsl:attribute>
+											</xsl:if>
+										</input>
+									</div>
+
+									<label>Inviami nuovi argomenti via email</label>
+									<div class="campo">
+										<input type="checkbox" name="flag_sottoscrizione_argomenti_via_email" >
+											<xsl:if test="$dati_utente/flag_sottoscrizione_argomenti_via_email = 1">
+												<xsl:attribute name="checked">
+													checked
+												</xsl:attribute>
+											</xsl:if>
+										</input>
+									</div>
+
 									<div class="campo">
 										<input type="submit" value="Registra modifiche"/>
 										<xsl:text> </xsl:text>

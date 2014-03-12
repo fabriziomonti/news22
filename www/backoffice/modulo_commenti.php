@@ -179,7 +179,8 @@ class modulo_commenti extends backoffice
 			$this->salvaRigheDB($riga->righeDB);
 			}
 		
-		$this->creaRSSCommenti($this->modulo->righeDB->connessioneDB, $riga->valore("id_articolo"));
+		$this->creaRSSCommenti($this->modulo->righeDB->connessioneDB, $riga->id_articolo);
+		$this->mailNuovoCommento($riga->id_articolo, $idInserito, $this->modulo->righeDB->connessioneDB);
 		
 		$dbconn->confermaTransazione();
 		$valoriRitorno = $idInserito ? array_merge(array("idInserito" => $idInserito), $this->modulo->input) : $this->modulo->input;

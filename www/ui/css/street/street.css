@@ -89,7 +89,14 @@ div#footer {
 	background-color: #999999;
 	float: left;
 	padding:15px;
+	vertical-aling: middle;
 }
+
+div#footer img
+	{
+	cursor: pointer;
+	margin-right: 6px;
+	}
 
 a {
 	color: #FF6600;

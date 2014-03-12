@@ -49,6 +49,8 @@ class profilo extends street
 			$ctrlP->corrispondenzaDB = $ctrl->corrispondenzaDB = false;
 		$ctrl = $this->modulo->aggiungiCaricaFile("avatar", "Avatar (max 100x100)", $solaLettura);
 		$this->modulo->aggiungiAreaTesto("descrizione", "Dice di sè", $solaLettura);
+		$this->modulo->aggiungiLogico("flag_sottoscrizione_articoli_via_email", "Inviami nuovi articoli via email", $solaLettura);
+		$this->modulo->aggiungiLogico("flag_sottoscrizione_argomenti_via_email", "Inviami nuovi argomenti via email", $solaLettura);
 
 		$button = new waBottone($this->modulo, 'cmd_invia', 'Accedi');
 		$this->modulo->leggiValoriIngresso();
@@ -65,7 +67,7 @@ class profilo extends street
 		$dbconn = $this->dammiConnessioneDB();
 		$sql = "SELECT utenti.*" .
 				" FROM utenti" .
-				" WHERE id_utente=" . $dbconn->interoSql($this->utente["id_utente"]);
+				" WHERE utenti.id_utente=" . $dbconn->interoSql($this->utente["id_utente"]);
 			
 		$rs = $this->dammiRigheDB($sql, $dbconn, 1);
 		if (!$rs->righe)
@@ -107,6 +109,8 @@ class profilo extends street
 		
 		$this->setEditorData($riga);
 		$this->salvaRigheDB($riga->righeDB);
+		
+		// salvataggio del flag di ricezione 
 		
 		// salvataggio avatar
 		if ($this->modulo->controlliInput["avatar"]->daSalvare())
