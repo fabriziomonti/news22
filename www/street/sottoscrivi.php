@@ -34,7 +34,10 @@ class sottoscrivi extends street
 			$riga->elimina();
 			$this->salvaRigheDB($rs);
 			}
-		$this->ridireziona($_SERVER["HTTP_REFERER"] . "#footer");
+		$retpage = $_GET["retpage"];
+		if (strpos($retpage, "#") == false)
+			$retpage .= ($_GET['id_argomento'] ? '#interventi' : '#commenti');
+		$this->ridireziona($retpage);
 		}
 		
 	

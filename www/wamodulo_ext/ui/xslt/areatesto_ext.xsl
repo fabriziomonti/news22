@@ -6,10 +6,12 @@
 <!-- ********************************************************************** -->
 <xsl:template match="areatesto_ext">
 
+	<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.21/tinymce.min.js'></script><xsl:text>&#10;</xsl:text>
 	<xsl:call-template name="intestazione_controllo"/>
 	
-	<div class="wamodulo_areatesto_ext">
-		<textarea name='{@id}' id='{@id}' class="mceEditor">
+	<div class="wamodulo_areatesto_ext" style="position: absolute; top: {alto}px; left: {sinistra}px;">
+	<!--<div class="wamodulo_areatesto_ext" >-->
+		<textarea name='{@id}' id='{@id}'>
 			<xsl:call-template name="dammiattributicontrollo"/>
 			<xsl:attribute name="class">mceEditor</xsl:attribute>
 			<xsl:value-of select="valore"/>		

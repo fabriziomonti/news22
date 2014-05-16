@@ -12,17 +12,20 @@
 <xsl:template match="waapplicazione">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0" />
+			
 			<link href='{waapplicazione_path}/uis/wa_default/css/waapplicazione.css' rel='stylesheet'/><xsl:text>&#10;</xsl:text>
+			<script type='text/javascript' src='//ajax.googleapis.com/ajax/libs/mootools/1.2.5/mootools-yui-compressed.js'></script>
 			<script type='text/javascript' src='{waapplicazione_path}/uis/wa_default/js/strmanage.js'></script><xsl:text>&#10;</xsl:text>
-			<script type='text/javascript' src='{waapplicazione_path}/uis/wa_default/js/moo1.2.js'></script><xsl:text>&#10;</xsl:text>
 			<script type='text/javascript' src='{waapplicazione_path}/uis/wa_default/js/waapplicazione.js'></script><xsl:text>&#10;</xsl:text>
 			
 			<!--js fancybox-->
-			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><xsl:text>&#10;</xsl:text>
-			<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.pack.js"></script><xsl:text>&#10;</xsl:text>
-			<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.easing-1.4.pack.js"></script><xsl:text>&#10;</xsl:text>
-			<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.mousewheel-3.0.4.pack.js"></script><xsl:text>&#10;</xsl:text>
-			<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.css" type="text/css" media="screen" /><xsl:text>&#10;</xsl:text>
+			<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><xsl:text>&#10;</xsl:text>
+			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.pack.js"></script><xsl:text>&#10;</xsl:text>
+			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.easing-1.4.pack.js"></script><xsl:text>&#10;</xsl:text>
+			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.mousewheel-3.0.4.pack.js"></script><xsl:text>&#10;</xsl:text>
+			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.css" type="text/css" media="screen" /><xsl:text>&#10;</xsl:text>
 			
 			<!--siccome usiamo sia mootols che jquery, jquery deve essere chiamato per esteso-->
 			<script type="text/javascript">

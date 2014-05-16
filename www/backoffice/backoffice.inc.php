@@ -37,7 +37,7 @@ class backoffice extends news22
 		parent::__construct();
 
         $this->preferenzeUtente = unserialize(base64_decode($_COOKIE[$this->nome . "_$this->siglaSezione" . "_prefs"]));
-        $this->modalitaNavigazione = $this->preferenzeUtente["navigazione_finestre"] ? WAAPPLICAZIONE_NAV_FINESTRA : WAAPPLICAZIONE_NAV_INTERNA;
+        $this->modalitaNavigazione = $this->preferenzeUtente["navigazione_interna"] ?  WAAPPLICAZIONE_NAV_INTERNA : WAAPPLICAZIONE_NAV_FINESTRA;
         if ($id_privilegio)
 			{
         	$this->verificaUtente();
@@ -232,10 +232,8 @@ class backoffice extends news22
 		if ($this->finestraFiglia)
 			{
 			$table->aggiungiAzione("Chiudi");
-			if (!$this->preferenzeUtente["navigazione_finestre"])
-				$table->azioni['Chiudi']->etichetta = "&lt; Torna";
 				
-			// portiamo il bottone "chiudi in prima posizione
+			// portiamo il bottone "chiudi" in prima posizione
 			$swappo['Chiudi'] = $table->azioni['Chiudi'];
 			foreach ($table->azioni as $k => $v)
 				{

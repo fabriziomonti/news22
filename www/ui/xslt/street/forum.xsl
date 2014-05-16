@@ -28,7 +28,7 @@
 					
 
 					<!-- COLONNA SX -->
-					<div id="colonnaSx">
+					<div id="corpoCentrale">
 						<xsl:for-each select="$argomenti/riga">
 							<div class="argomento_blocco">
 								<xsl:call-template name="blocco_argomento">
@@ -43,7 +43,7 @@
 						</xsl:call-template>
 
 
-					</div><!-- id="colonnaSx" -->
+					</div><!-- id="corpoCentrale" -->
 					
 					<xsl:call-template name="pagina_footer" />
 

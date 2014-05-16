@@ -12,9 +12,6 @@
 	<link href='{wamodulo_path}/uis/wa_default/css/wamodulo.css' rel='stylesheet'/>
 	
 	<!-- inclusione delle classi che gestiscono i controlli	-->
-	<script type='text/Javascript' src='{wamodulo_path}/uis/wa_default/js/overlib.js'></script>
-	<script type='text/Javascript' src='{wamodulo_path}/uis/wa_default/js/calpop.js'></script><xsl:text>&#10;</xsl:text>
-	<script type='text/Javascript' src='{wamodulo_path}/uis/wa_default/js/moo1.2.js'></script><xsl:text>&#10;</xsl:text>
 	<script type='text/Javascript' src='{wamodulo_path}/uis/wa_default/js/modulo.js'></script><xsl:text>&#10;</xsl:text>
 	<script type='text/Javascript' src='{wamodulo_path}/uis/wa_default/js/controllo.js'></script><xsl:text>&#10;</xsl:text>
 	<script type='text/Javascript' src='{wamodulo_path}/uis/wa_default/js/areatesto.js'></script><xsl:text>&#10;</xsl:text>
@@ -42,8 +39,6 @@
 	<!-- estensioni di wamodulo	-->
 	<script type='text/javascript' src='{wamodulo_path}/../../wamodulo_ext/ui/js/selezione_ext.js'></script><xsl:text>&#10;</xsl:text>
 	<script type='text/javascript' src='{wamodulo_path}/../../wamodulo_ext/ui/js/areatesto_ext.js'></script><xsl:text>&#10;</xsl:text>
-	<script type='text/javascript' src='{wamodulo_path}/../wadocumentazione/wadocapp/ui/js/tiny_mce/tiny_mce.js'></script><xsl:text>&#10;</xsl:text>
-	<!--<script type='text/javascript' src='http://morandi.loc/backoffice/js/tiny_mce/tiny_mce.js'></script><xsl:text>&#10;</xsl:text>-->
 	
  	<xsl:variable name="mysinistra">
 		<xsl:choose>

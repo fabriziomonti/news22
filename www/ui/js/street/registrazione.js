@@ -1,3 +1,11 @@
+//
+//$(document).ready(function (event) 
+//		    {
+//			document.getElementById("modulo_registrazione").scrollIntoView();
+//		    }
+//		 );
+
+
 //-------------------------------------------------------------------------
 function validaForm(form)
 	{

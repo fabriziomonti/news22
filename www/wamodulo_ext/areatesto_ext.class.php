@@ -36,10 +36,10 @@ class waAreaTesto_ext extends waAreaTesto
 		{
 
 		// questa cosa è una porcheria che va migliorata, ma non ho tempo!!!
-		$this->altezza -= 30;
+		$this->altezza -= 170;
 		$this->sinistra += 4;
 		parent::mostra();
-		$this->altezza += 30;
+		$this->altezza += 170;
 		$this->sinistra -= 4;
 		}
 

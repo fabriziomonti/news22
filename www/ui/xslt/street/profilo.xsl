@@ -26,16 +26,16 @@
 					
 					
 					<!-- COLONNA SX -->
-					<div id="colonnaSx">
+					<div id="corpoCentrale">
 						<xsl:if test="$dati_utente">
-
+							
+							<div class="articolo_blocco">
 							<h1>Il tuo profilo</h1>
 							<xsl:if test="$dati_utente/avatar != ''">
-								<img src="../downloaddoc.php?tabella=utenti&amp;tipo=avatar&amp;id={$dati_utente/id_utente}" style="margin-bottom: 20px;"/>
+								<img src="../downloaddoc.php?tabella=utenti&amp;tipo=avatar&amp;id={$dati_utente/id_utente}" style="margin-bottom: 1.2em;"/>
 								<br />
 							</xsl:if>
 
-							<div class="articolo_blocco">
 
 								<form id="wamodulo" method="post" onsubmit="return validaForm(this)" enctype="multipart/form-data" >
 									<input type="hidden" id="wamodulo_nome_modulo" name="wamodulo_nome_modulo" value="wamodulo" />
@@ -53,7 +53,7 @@
 
 									<label>Password e conferma password</label>
 									solo se vuoi modificarla; nel caso:
-									<ul>
+									<ul id="help_password">
 										<li>8~12 caratteri</li>
 										<li>solo lettere e numeri</li>
 										<li>almeno una maiuscola</li>
@@ -62,7 +62,7 @@
 									</ul>
 									<div class="campo">
 										<input  value="" type="password" name="pwd" maxlength="12"/>
-										<input  value="" type="password" name="pwd_conferma"  maxlength="12" style="margin-left: 10px;"/>
+										<input  value="" type="password" name="pwd_conferma"  maxlength="12" style="margin-left: 1em;"/>
 									</div>
 
 									<label>Il tuo avatar</label>
@@ -107,7 +107,7 @@
 							</div>
 						</xsl:if>
 
-					</div><!-- id="colonnaSx" -->
+					</div><!-- id="corpoCentrale" -->
 					
 					<xsl:call-template name="pagina_footer" />
 	

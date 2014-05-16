@@ -27,10 +27,11 @@ function rispondiIntervento(id_argomento, id_intervento)
 		}
 	else
 		{
-		form.annulla_modifica.focus();
 		tinyMCE.get('testo').focus();
-		
 		}
+		
+	var elems = location.href.split("#");
+	location.href = elems[0] + "#modulo_intervento";
 	}
 	
 //-------------------------------------------------------------------------
@@ -51,10 +52,11 @@ function modificaIntervento(id_argomento, id_intervento)
 	else
 		{
 		tinyMCE.get('testo').setContent(testo_intervento);
-		form.annulla_modifica.focus();
 		tinyMCE.get('testo').focus();
-		
 		}
+		
+	var elems = location.href.split("#");
+	location.href = elems[0] + "#modulo_intervento";
 	}
 	
 //-------------------------------------------------------------------------
@@ -67,9 +69,10 @@ function annullaModificaIntervento(id_argomento)
 	form.testo.value = "";
 	form.annulla_modifica.style.visibility = "hidden";
 	form.action = "?id_argomento=" + id_argomento;
-
+	
 	if (tinyMCE && tinyMCE.get('testo'))
 		tinyMCE.get('testo').setContent('');
+
 	}
 
 //-------------------------------------------------------------------------

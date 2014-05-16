@@ -99,7 +99,7 @@ class registrazione extends street
 		$idInserito = $dbconn->ultimoIdInserito();
 		$this->aggiungiPrivilegi($idInserito);
 		
-//		$this->inviaMailCredenziali($riga);
+		$this->inviaMailCredenziali($riga);
 		
 		$dbconn->confermaTransazione();
 

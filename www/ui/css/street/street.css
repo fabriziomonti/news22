@@ -1,8 +1,13 @@
 @CHARSET "UTF-8";
+
+html
+	{
+	font-size: 16px;
+	}
 	
 body {
-	margin: 0px;
-	padding: 0px;
+	margin: 0em;
+	padding: 0em;
 	background-color: #dddddd;
 	background-repeat: repeat-y;
 	background-position: center;
@@ -19,84 +24,52 @@ div#pagina {
 	
 }
 
-
-div#contenitore {
-	width: 100%;
-	float:left;
-	background-color: #ffffff;
-}
-
-
 div#header {
-	width: 950px;
-	float: left;
-	height: 170px;
-	margin: 15px;
+	width: 96%;
+	height: 8em;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1%;
 	background-color: #dddddd;
 	background-image: url(../../img/street/logo_grande.png);
 	background-repeat: no-repeat;
 	background-position: left;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
+	border-radius:1em;
+	behavior: url(../third_party_libs/pie/PIE.php);
 }
+
+div#header:before
+	{
+	}
+
 
 
 div#bloccoMenu {
-	width: 630px;
-	float: left;
-	padding: 15px;
-}
-
-
-div#menuCategorieArticoli {
-	width: 100%;
-	float: left;
-	margin-bottom: 5px;
-}
-
-
-div#menuCategorieArgomenti {
-	width: 100%;
-	float: left;
-	margin-bottom: 5px;
-}
-
-
-div#bloccoRicerca {
-	width: 290px;
-	text-align: right;
-	padding: 15px;
-	float: left;
+	width: 96%;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 1.5%;
 }
 
 
 
-div#colonnaSx {
-	width: 950px;
-	float: left;
-	padding:15px;
+
+div#contenitore{
 }
 
-
-div#colonnaDx {
-	width: 290px;
-	float: left;
-	padding:15px;
+div#corpoCentrale {
+	
 }
+
 
 div#footer {
-	width: 950px;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
 	background-color: #999999;
-	float: left;
-	padding:15px;
-	vertical-aling: middle;
+	padding-top: 1%;
+	height: 2em;
 }
-
-div#footer img
-	{
-	cursor: pointer;
-	margin-right: 6px;
-	}
 
 a {
 	color: #FF6600;
@@ -119,7 +92,8 @@ h2 {
 }
 
 p {
-	margin: 0px 0px 15px 0px;
+	margin: 0% 1% 1% 0%;
+	margin: 0em 1em 1em 0em;
 }
 
 
@@ -130,166 +104,142 @@ label {
 	font-weight: bold;
 }
 
-.btn_menuCategorieArticoli {
-	color:#333333;
-	margin: 0px 5px 5px 0px;
-	padding: 5px 10px 5px 10px;
-	display: block;
-	float:left;
-	background-color: #dddddd;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
+div#intestazioneArticoli,
+div#intestazioneForum
+	{
+	margin-top: 1.5%;
+	margin-bottom: 0.4em;
+	vertical-align: bottom;
+	}
+
+div#intestazioneArticoli img
+	{
+	display: inline-block;
+	vertical-align: bottom;
 }
 
+div#menuCategorieArticoli,
+div#menuCategorieArgomenti 
+{
+	line-height: 2em;
+	display: inline-block;
+}
 
-.btn_menuCategorieArticoli:hover {
+div#menuCategorieArticoli div,
+div#menuCategorieArgomenti div,
+div#menuCategorieArticoli img
+{
+	float: left;
+}
+
+div#menuCategorieArticoli img
+{
+	margin-top: 0.1em;
+	height: 1.8em;;
+	width: auto;
+}
+
+.btn_menuCategorieArticoli,
+.btn_menuCategorieArgomenti ,
+.btn_menuCategorieArticoli:hover ,
+.btn_menuCategorieArgomenti:hover 
+	{
+	margin: 0em 0.2em 0em 0em;
+	padding: 0.2em 0.5em 0.2em 0.5em;
+	border-radius: 0.5em;
+	text-decoration: none;
+	white-space: nowrap;
+	behavior: url(../third_party_libs/pie/PIE.php);
+	}
+
+.btn_menuCategorieArticoli 
+	{
+	color:#333333;
+	background-color: #dddddd;
+	}
+
+.btn_menuCategorieArticoli:hover 
+	{
 	color:#FFFFFF;
 	background-color: #FF6600;
-	text-decoration: none;
-}
+	}
 
-.btn_menuCategorieArticoli_selezionato {
+.btn_menuCategorieArticoli.selezionato 
+	{
 	color:#FFFFFF;
 	background-color: #FF6600;
-	margin: 0px 5px 5px 0px;
-	padding: 5px 10px 5px 10px;
-	display: block;
-	float:left;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
-}
+	}
 
-
-.btn_menuCategorieArticoli_selezionato:hover {
+.btn_menuCategorieArticoli.selezionato:hover 
+	{
 	color:#333333;
 	background-color: #dddddd;
-	text-decoration: none;
-}
+	}
 
-
-.btn_menuCategorieArgomenti {
+.btn_menuCategorieArgomenti 
+	{
 	color:#FFFFFF;
 	background-color: #333333;
-	margin: 0px 5px 5px 0px;
-	padding: 5px 10px 5px 10px;
-	display: block;
-	float:left;
-	text-decoration: none;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
-}
+	}
 
-
-.btn_menuCategorieArgomenti:hover {
+.btn_menuCategorieArgomenti:hover 
+	{
 	color:#FFFFFF;
 	background-color: #FF6600;
-	text-decoration: none;
-}
+	}
 
-.btn_menuCategorieArgomenti_selezionato {
+.btn_menuCategorieArgomenti.selezionato 
+	{
 	color:#FFFFFF;
 	background-color: #FF6600;
-	margin: 0px 5px 5px 0px;
-	padding: 5px 10px 5px 10px;
-	display: block;
-	float:left;
-	text-decoration: none;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
-}
+	}
 
-
-.btn_menuCategorieArgomenti_selezionato:hover {
+.btn_menuCategorieArgomenti.selezionato:hover 
+	{
 	color:#FFFFFF;
 	background-color: #333333;
-	text-decoration: none;
+	}
+
+div#bloccoRicerca {
+	padding: 2%;
 }
 
 
-.inPrimoPiano_blocco {
-	display: block;
-	float:left;
-	padding:15px;
-	width: 950px;
-	margin-bottom:5px;
+.inPrimoPiano_blocco,
+.articolo_blocco,
+.argomento_blocco
+{
+	padding: 1.5%;
+	width: 98%;
+	margin-bottom: 0.5em;
 	border-top-style: dashed;
 	border-top-width: thin;
-	border-bottom-style: dashed;
-	border-bottom-width: thin;
 	border-color: #cccccc;
 }
 
 .inPrimoPiano_titolo {
 	font-size: 2em;
-	margin: 0px 0px 10px 0px;
-}
-
-.inPrimoPiano_sottoTitolo {
-	font-size: 20px;
-	margin: 0px 0px 10px 0px;
-}
-
-.inPrimoPiano_foto {
-	width: 950px;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
-	margin: 0px 0px 10px 0px;
+	margin: 0em 0em 0.4em 0em;
 }
 
 .inPrimoPiano_sintesi {
 	font-size: 1.2em;
 	font-style: italic;
-	margin: 0px 0px 10px 0px;
-	
-	
-}
-
-
-
-
-.articolo_blocco,
-.argomento_blocco
-{
-	display: block;
-	float:left;
-	width: 950px;
-	border-right-style: dashed;
-	border-right-width: thin;
-	border-bottom-style: dashed;
-	border-bottom-width: thin;
-	border-color: #cccccc;
-	padding: 0px 15px 15px 0px;
-	margin-bottom: 15px;
+	margin: 0em 0em 0.4em 0em;
 }
 
 .articolo_titolo ,
 .argomento_titolo
 {
-	float:left;
-	width: 100%;
+	width: 98%;
 	font-size: 1.2em;
-	margin: 0px 0px 5px 0px;
+	margin: 0em 0em 0.4em 0em;
 }
 
 .articolo_sottoTitolo {
-	float:left;
-	width: 100%;
-	font-size: 20px;
-	margin: 0px 0px 5px 0px;
-}
-
-.articolo_bloccoFoto {
-	float:left;
-	width: 100%;
-	margin-bottom:15px;
-}
-
-.articolo_foto {
-	float:left;
-	width: 200px;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
-	margin: 0px 10px 0px 0px;
+	font-size: 1.5em;
+	width: 98%;
+	margin: 0em 0em 0.4em 0em;
 }
 
 .articolo_sintesi ,
@@ -297,63 +247,100 @@ label {
 {
 	font-size: 1em;
 	font-style: italic;
+	margin: 0em 0em 0.4em 0.2em;
 	
-}
-
-
-.commenti,
-interventi
-{
-	float:left;
-	width: 100%;
-	text-align: right;
-
-}
-
-
-.btn_tagGenerico {
-	color: #333333;
-	font-size: 1.2em;
-	font-weight: bold;
-
-}
-
-
-
-.btn_tagGenerico:hover {
-	text-decoration: none;
 }
 
 .datiArticolo,
 .datiArgomento
 	{
-	float:left;
-	width: 99%;
-	padding:5px;
+	width: 96%;
+	padding: 1.5%;
 	font-size: 0.8em;
 	color: #333333;
 	background-color: #DDDDDD;
-	margin: 15px 0px 15px 0px;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
+	margin: 2em 0em 0em 0em;
+	border-radius: 1em;
+	behavior: url(../third_party_libs/pie/PIE.php);
 	}
 
-.elencoCommenti ,
+.elencoCommenti,
 .elencoInterventi
 {
-	float: right;
-	width: 99%;
-	padding:5px;
-	font-size: 0.8em;
-	color: #333333;
-	background-color: #DDDDDD;
-	margin: 0px 0px 15px 0px;
-	border-radius:10px 10px 10px 10px;
-	-moz-border-radius:10px 10px 10px 10px;
+	border-top-style: dashed;
+	border-top-width: thin;
+	border-bottom-style: dashed;
+	border-bottom-width: thin;
+	border-color: #cccccc;
+	clear: both;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
 }	
 
+.bloccoFeeder
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 96%;
+	margin-top: 0.5em;
+	margin-bottom: 0;
+	clear: both;
+}
+
+.bloccoFeeder img
+{
+	cursor: pointer;
+}
+
+.bloccoCommento,
+.bloccoIntervento
+{
+	width: 94%;
+	padding: 1.5%;
+	font-size: 0.8em;
+	color: #333333;
+	background-color: #dddddd;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	border-radius: 1em;
+	behavior: url(../third_party_libs/pie/PIE.php);
+	clear: both;
+}	
+
+div.bloccoCommento img.edit,
+div.bloccoIntervento img.edit
+{
+	float: right; 
+	margin-right: 2em;
+	border: none;
+}	
+
+div.modulo_login,
+div.modulo_commento,
+div.modulo_intervento,
+div.modulo_ricerca
+{
+	width: 96%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 1em;
+}
+
+div.modulo_ricerca
+{
+	border-top-style: dashed;
+	border-top-width: thin;
+	border-color: #cccccc;
+	margin-top: 2em;
+	padding-top: 1em;
+}
+
+div.modulo_ricerca hr
+{
+}
+
 .datiArgomento,
-.elencoInterventi
+.bloccoIntervento
 {
 	color:#FFFFFF;
 	background-color: #333333;
@@ -364,25 +351,32 @@ interventi
 .campo{
 	display: block;
 	width: 100%;
-	margin: 0px 0px 15px 0px;
+	margin: 0em 0em 0.5em 0em;
 }
 
 .campo input
 	{
-	margin-right: 40px;
+	margin-right: 1.5em;
 	}
 
+.campo img
+	{	
+	display: inline-block;
+	/*height: 100%;*/
+	vertical-align: middle;
+	}
 
 .messaggio
 	{
 	font-size: 1.2em;
 	color: #FFFFFF;
-	padding: 10px;
-	border-radius:10px 10px 10px 10px;
-	display: block;
-	float: left;
-	width: 935px;
-	margin-left: 13px;
+	padding: 0.2em 0.5em 0.2em 0.5em;
+	border-radius: 0.5em;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 2em;
+	width: 94%;
+	behavior: url(../third_party_libs/pie/PIE.php);
 	}
 
 .errore
@@ -395,59 +389,52 @@ interventi
 	background-color: #008000;
 	}
 
-
-.ricercaAvanzata {
-	margin: 0px;
-	padding: 15px;
-	background-color: #ffffff;
-	background-image: none;
-	text-align: justify;
-	color: #333333;
-}
-
-div#intestazioneForum a
-	{
-	margin-top: 20px;
-	}
-
-div.campo img
-	{
-		margin-top: 6px;
-		margin-bottom: -6px;
-	
-	}
-	
 form input,
 form textarea
 {
-	border-radius:10px 10px 10px 10px;
-	padding-left: 6px;
-	padding-right: 6px;
+	border-radius: 1em;
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+	behavior: url(../third_party_libs/pie/PIE.php);
 	
 }
 
 .mceEditor
 	{
-	width: 935px; 
-	height: 200px; 
+	width: 98.5%; 
+	height: 16em; 
 	}
 	
 input[type="button"],
 input[type="submit"]
 {
-	width: 140px;
+	margin-top: 1em;
+	width: 12em;
 	text-transform: capitalize;
 }
 
 input[type="button"][name="bottone_ricerca_rapida"]
 {
-	width: 60px;
+	margin-top: 0.1em;
+	width: 6em;
 }
 
 div.elencoArticoliUtente,
-div.elencoArgomentiUtente
+div.elencoArgomentiUtente,
+div.elencoCommentiUtente,
+div.elencoInterventiUtente
 {
-	margin-bottom: 20px;
+	width: 96%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	/*clear: both;*/
+	border-top-style: dashed;
+	border-top-width: thin;
+	border-color: #cccccc;
+	clear: both;
+	
 }
 
 div.elencoArticoliUtente h1,
@@ -455,8 +442,7 @@ div.elencoArgomentiUtente h1,
 div.elencoCommentiUtente  h1,
 div.elencoInterventiUtente  h1
 	{
-	margin-top: 30px;	
-	margin-bottom: 0px;	
+	margin-bottom: none;	
 	}
 	
 div.elencoArticoliUtente table,
@@ -464,9 +450,9 @@ div.elencoArgomentiUtente  table,
 div.elencoCommentiUtente table,
 div.elencoInterventiUtente table 
 	{
-	font-size: 12px;
+	font-size: 0.8em;
 	width: 100%;
-	margin: 0px;	
+	margin: 0em;	
 	}
 	
 div.elencoArticoliUtente table td,
@@ -474,54 +460,120 @@ div.elencoArgomentiUtente table td,
 div.elencoCommentiUtente table td,
 div.elencoInterventiUtente table td
 	{
-	padding-right: 10px;
+	padding-right: 0.5em;
 	white-space: nowrap;
 	overflow: hidden;
 	}
 	
-div#colonnaSx form label table.allineamentoControlli,
-div#colonnaSx form label table.allineamentoControlli td,
-div#colonnaSx form div.campo table.allineamentoControlli,
-div#colonnaSx form div.campo table.allineamentoControlli td
+div#corpoCentrale form label table.allineamentoControlli,
+div#corpoCentrale form label table.allineamentoControlli td,
+div#corpoCentrale form div.campo table.allineamentoControlli,
+div#corpoCentrale form div.campo table.allineamentoControlli td
 {
-	padding: 0px; 
-	margin: 0px;
+	padding: 0em; 
+	margin: 0em;
 }
 
-div#colonnaSx form div.campo table.allineamentoControlli
+div#corpoCentrale form div.campo table.allineamentoControlli
 {
-	margin-top: -4px;
+	margin-top: -0.2em;
 }
 
-div#colonnaSx form label table.allineamentoControlli td,
-div#colonnaSx form div.campo table.allineamentoControlli td
+div#corpoCentrale form label table.allineamentoControlli td,
+div#corpoCentrale form div.campo table.allineamentoControlli td
 {
-	width: 300px;
+	width: 20em;
 }
 
 div.bottoni_paginazione
 {
-	float:left;
-	width: 99%;
-	padding:5px;
-	font-size: 14px;
-	margin-top: -8px;
+	width: 96%;
+	font-size: 0.95em;
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: bold;
 }
 
 div.pagina_precedente
 {
 	float: left;
+	margin-bottom: 1em;
 }
 
 div.pagina_successiva
 {
-	float: right;
 	text-align: right;
+	margin-bottom: 1em;
 }
 
 h1#label_testo_commento,
 h1#label_testo_intervento
 {
-	margin-top: 20px; 
-	margin-bottom: 0px;
+	margin-bottom: 0em;
 }
+
+ul#help_password
+{
+	margin-top: 0.1em;
+}
+
+ul#help_password li
+{
+	font-size: 0.9em;
+}
+
+/*********** media queries ***************/
+/*********** media queries ***************/
+/*********** media queries ***************/
+/*********** media queries ***************/
+/*********** media queries ***************/
+@media only screen and (max-device-width: 240px) , 
+		only screen and (max-device-width: 320px),
+		only screen and (max-device-width: 480px),
+		only screen and (max-device-width: 600px),
+		only screen and (max-device-width: 640px),
+		only screen and (max-device-width: 800px),
+		only screen and (max-device-width: 1024px),
+		only screen and (max-device-width: 1068px)
+	{
+	html
+		{
+		font-size: 22px;
+		}
+	}
+	
+/* Only iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+	html 
+		{
+		font-size: 0.9em;
+		}
+		
+}
+
+/* Only iPhone 5 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 2),
+only screen and (min-device-pixel-ratio : 2) {
+	html 
+		{
+		font-size: 0.75em;
+		}
+	
+	div.bottoni_paginazione div.pagina_precedente a
+		{	
+		/*mah....*/
+		font-size: 1.05em;
+		}
+
+	div.bottoni_paginazione div.pagina_successiva a
+		{	
+		/*mah....*/
+		font-size: 0.6em;
+		}
+
+}
+
+

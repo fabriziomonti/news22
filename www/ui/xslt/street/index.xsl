@@ -44,7 +44,7 @@
 					
 					<!-- COLONNA SX -->
 					<xsl:variable name="primo_articolo" select="number($primo_piano)" />
-					<div id="colonnaSx">
+					<div id="corpoCentrale">
 						<xsl:for-each select="$articoli/riga[position() > $primo_articolo]">
 							<div class="articolo_blocco">
 								<xsl:call-template name="blocco_articolo">
@@ -60,7 +60,7 @@
 						</xsl:call-template>
 
 
-					</div><!-- id="colonnaSx" -->
+					</div><!-- id="corpoCentrale" -->
 					
 					<xsl:call-template name="pagina_footer" />
 

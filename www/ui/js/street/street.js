@@ -1,3 +1,17 @@
+
+
+$(document).ready(function (event) 
+		    {
+			var w = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+			if (w < 1028)
+				{
+				w = parseInt(w - w / 100 * 5);
+				$("#pagina").width(w);
+				}
+		    }
+		 );
+
+
 //-------------------------------------------------------------------------
 function check_email(form)
 	{
@@ -25,7 +39,8 @@ function sottoscriviCommentiViaMail(id_articolo)
 		return false;
 		}
 		
-	location.href = "sottoscrivi.php?azione=sottoscrivi&id_articolo=" + id_articolo;
+	location.href = "sottoscrivi.php?azione=sottoscrivi&id_articolo=" + id_articolo +
+									"&retpage=" + escape(location.href);
 	}
 
 //-------------------------------------------------------------------------
@@ -37,7 +52,8 @@ function smollaCommentiViaMail(id_articolo)
 		return false;
 		}
 		
-	location.href = "sottoscrivi.php?azione=smolla&id_articolo=" + id_articolo;
+	location.href = "sottoscrivi.php?azione=smolla&id_articolo=" + id_articolo +
+									"&retpage=" + escape(location.href);
 	}
 
 //-------------------------------------------------------------------------
@@ -49,7 +65,8 @@ function sottoscriviInterventiViaMail(id_argomento)
 		return false;
 		}
 		
-	location.href = "sottoscrivi.php?azione=sottoscrivi&id_argomento=" + id_argomento;
+	location.href = "sottoscrivi.php?azione=sottoscrivi&id_argomento=" + id_argomento +
+									"&retpage=" + escape(location.href);
 	}
 
 //-------------------------------------------------------------------------
@@ -61,6 +78,7 @@ function smollaInterventiViaMail(id_argomento)
 		return false;
 		}
 		
-	location.href = "sottoscrivi.php?azione=smolla&id_argomento=" + id_argomento;
+	location.href = "sottoscrivi.php?azione=smolla&id_argomento=" + id_argomento +
+									"&retpage=" + escape(location.href);
 	}
 

@@ -82,7 +82,7 @@ class modulo_commenti extends backoffice
 			}
 			
 		$ctrl = $this->modulo->aggiungiSelezione("id_articolo", "Articolo", $solaLettura, !$solaLettura);
-			$ctrl->sql = "SELECT id_articolo, CONCAT(DATE_FORMAT(data_ora_inizio_pubblicazione, '%d/%m/%Y'), ' - ', STRIP_TAGS(titolo))" .
+			$ctrl->sql = "SELECT id_articolo, CONCAT(DATE_FORMAT(data_ora_inizio_pubblicazione, '%d/%m/%Y'), ' - ', titolo)" .
 							" FROM articoli" .
 							" WHERE NOT sospeso" .
 							" AND data_ora_inizio_pubblicazione IS NOT NULL" .
@@ -194,7 +194,7 @@ class modulo_commenti extends backoffice
 	function dammiSqlCommentiGenitori($id_articolo)
 		{
 		$dbconn = $this->modulo->righeDB->connessioneDB;
-		return "SELECT commenti.id_commento, CONCAT(utenti.nickname, ' - ', DATE_FORMAT(commenti.data_ora_creazione, '%d/%m/%Y %H.%i.%s'), ' - ', LEFT(STRIP_TAGS(commenti.testo), 100)) AS descrizione_commento" .
+		return "SELECT commenti.id_commento, CONCAT(utenti.nickname, ' - ', DATE_FORMAT(commenti.data_ora_creazione, '%d/%m/%Y %H.%i.%s'), ' - ', LEFT(commenti.testo, 100)) AS descrizione_commento" .
 						" FROM commenti" .
 						" INNER JOIN utenti ON commenti.id_utente=utenti.id_utente" .
 						" WHERE NOT commenti.sospeso" .

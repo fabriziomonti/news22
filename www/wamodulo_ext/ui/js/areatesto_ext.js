@@ -21,26 +21,43 @@ var waareatesto_ext = new Class
 		
 		if (tinyMCE.initialized != true)
 			{
-			tinyMCE.init
-				(
-					{
-					theme : "advanced",
-					mode : "specific_textareas",
-					plugins : "safari,fullscreen, table",
-					//plugins : "safari,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,imagemanager,filemanager",
-					content_css : "finto.css",
-					theme_advanced_toolbar_location : "top",
-					theme_advanced_toolbar_align : "left",
-					theme_advanced_buttons3_add : "fullscreen,save,cancel",
-					theme_advanced_statusbar_location : "none",
-					theme_advanced_disable: "styleselect",
-					editor_selector: "mceEditor"
-					}
-				);
+			tinyMCE.init(
+							{
+							relative_urls : true,
+							document_base_url : "./",
+							forced_root_block : false,
+							force_br_newlines : true,
+							force_p_newlines : false,
+							selector : ".mceEditor",
+							plugins : "fullscreen, link, image, textcolor, emoticons, table, code, media, template, hr",
+							menu :	
+								{ 
+								edit   : {title : 'Edit'  , items : 'undo redo | cut copy paste pastetext | selectall'},
+								insert : {title : 'Insert', items : 'link image media | hr'},
+								format : {title : 'Format', items : 'bold italic underline strikethrough superscript subscript | formats removeformat'},
+								table  : {title : 'Table' , items : 'inserttable tableprops deletetable | cell row column'},
+								tools  : {title : 'Tools' , items : 'fullscreen code'}
+								},
+
+							toolbar: "fontselect fontsizeselect bullist numlist outdent indent forecolor backcolor emoticons fullscreen",
+
+							readonly : false,
+							statusbar : false,
+							setup: function(editor) 
+								{
+//								editor.on('BeforeRenderUI', function(e) 
+//									{
+//									this.settings.width = this.getElement().style.width;
+//									this.settings.height = this.getElement().style.height;
+//									});
+
+								}
+
+							}			
+						);
 			tinyMCE.initialized = true;
 			}
 			
-		setTimeout("document.wapagina.moduli." + this.modulo.nome + ".controlli." + this.nome + ".posiziona()", 200);		
 		},
 				
 	//-------------------------------------------------------------------------
@@ -51,19 +68,9 @@ var waareatesto_ext = new Class
 		{
 		tinymce.get(this.nome).save();
 		return this.obj.value;
-		},
-		
-	//-----------------------------------------------------------------
-	posiziona: function ()
-		{
-		var tiny_container = document.getElementById(this.nome + "_parent");
-		if (!tiny_container)
-			setTimeout("document.wapagina.moduli." + this.modulo.nome + ".controlli." + this.nome + ".posiziona()", 100);		
-		tiny_container.style.position = "absolute";
-		tiny_container.style.top = this.obj.style.top;
-		tiny_container.style.left = this.obj.style.left;
 		}
 		
+
 	}
 );
 

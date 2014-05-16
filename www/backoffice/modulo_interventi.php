@@ -80,7 +80,7 @@ class modulo_interventi extends backoffice
 			}
 			
 		$ctrl = $this->modulo->aggiungiSelezione("id_argomento", "Argomento", $solaLettura, !$solaLettura);
-			$ctrl->sql = "SELECT id_argomento, CONCAT(DATE_FORMAT(data_ora_inizio_pubblicazione, '%d/%m/%Y'), ' - ', STRIP_TAGS(titolo))" .
+			$ctrl->sql = "SELECT id_argomento, CONCAT(DATE_FORMAT(data_ora_inizio_pubblicazione, '%d/%m/%Y'), ' - ', titolo)" .
 							" FROM argomenti" .
 							" WHERE NOT sospeso" .
 							" AND data_ora_inizio_pubblicazione IS NOT NULL" .
@@ -192,7 +192,7 @@ class modulo_interventi extends backoffice
 	function dammiSqlInterventiGenitori($id_argomento)
 		{
 		$dbconn = $this->modulo->righeDB->connessioneDB;
-		return "SELECT interventi.id_intervento, CONCAT(utenti.nickname, ' - ', DATE_FORMAT(interventi.data_ora_creazione, '%d/%m/%Y %H.%i.%s'), ' - ', LEFT(STRIP_TAGS(interventi.testo), 100)) AS descrizione_intervento" .
+		return "SELECT interventi.id_intervento, CONCAT(utenti.nickname, ' - ', DATE_FORMAT(interventi.data_ora_creazione, '%d/%m/%Y %H.%i.%s'), ' - ', LEFT(interventi.testo, 100)) AS descrizione_intervento" .
 						" FROM interventi" .
 						" INNER JOIN utenti ON interventi.id_utente=utenti.id_utente" .
 						" WHERE NOT interventi.sospeso" .

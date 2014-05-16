@@ -226,7 +226,7 @@ class news22 extends waApplicazione
 											$solaLettura, $obbligatorio, 
 											$altoEtichetta, $altoControllo, 
 											$sinistraEtichetta, $sinistraControllo);
-		$ctrl->altezza = 180;
+		$ctrl->altezza = 170;
 		$modulo->giustificaControllo($ctrl, false);
 		return $ctrl;
 		}
@@ -537,26 +537,6 @@ class news22 extends waApplicazione
 		return $this->utente["supervisore"] == 1;
 		}
 
-	//*****************************************************************************
-	/**
-	 * NON È PIÙ UTILIZZATA!!! la UDF sui campi longtext era lentissima
-	 * 
-	 * funzione che compone il casting del risultato di una strip_tags di mysql
-	 * (UDF); c'e' un buco in mysql per cui occorre sempre fare questo casting
-	 * per la ricerca, se vuoi usare una UDF
-	 * 
-	 * @param type $tocast
-	 * @param type $as
-	 * @return type
-	 */
-	function castrip($tocast, $as = false)
-		{
-		$toret = "(CAST(STRIP_TAGS($tocast) AS CHAR CHARACTER SET utf8) COLLATE utf8_unicode_ci)";
-		if ($as)
-			$toret .= " AS $as";
-		return $toret;
-		}
-		
 	//***************************************************************************
 	/**
 	* 
@@ -621,7 +601,7 @@ class news22 extends waApplicazione
 		if ($this->haPrivilegio(PRIV_HTML_ESTESO))
 			return $riga->valore($nome_campo);
 			
-		require_once(dirname(__FILE__) . "/inputfilter/class.inputfilter_clean.php5");
+		require_once("inputfilter/class.inputfilter_clean.php5");
 		if ($this->haPrivilegio(PRIV_HTML_BASE))
 			{
 			// permessi base: italic bold e anchor

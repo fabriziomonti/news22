@@ -25,12 +25,13 @@
 					
 					
 					<!-- COLONNA SX -->
-					<div id="colonnaSx">
+					<div id="corpoCentrale">
 
 						<xsl:if test="not(pagina/elementi/elemento[nome='messaggio']) and not(pagina/elementi/elemento[nome='messaggio_ok'])">
 							<!-- REGISTRAZIONE -->
-							<h1>Registrazione</h1>
-							<div class="articolo_blocco">
+							<div class="articolo_blocco" id="modulo_registrazione">
+								<a name="modulo_registrazione"></a>
+								<h1>Registrazione</h1>
 
 								<p>
 									Per poter lasciare un commento o intervenire nel forum devi essere registrato.
@@ -50,7 +51,7 @@
 
 									<label>Regolamento del sito</label>
 									<div class="campo">
-										<textarea name="condizioni_servizio" cols='88' rows='10' onKeyPress='return false'>
+										<textarea name="condizioni_servizio" style="width: 96%;" rows="5" onKeyPress='return false'>
 											bla bla bla....
 										</textarea>
 									</div>	
@@ -60,7 +61,7 @@
 
 									<label>Informativa trattamento dati</label>
 									<div class="campo">
-										<textarea name="informativa_privacy" cols='88' rows='10' onKeyPress='return false'>Informativa art. 13 D.Lgs. 196/2003
+										<textarea name="informativa_privacy" style="width: 96%;" rows="5" onKeyPress='return false'>Informativa art. 13 D.Lgs. 196/2003
 
 Si informa il sottoscrittore della presente che il decreto legislativo n. 196/2003 prevede la tutela delle persone e di altri soggetti rispetto al trattamento dei dati personali. Secondo le leggi indicate, tale trattamento sarà improntato ai principi di correttezza, liceità e trasparenza tutelando la riservatezza e i diritti del sottoscrittore. Le seguenti informazioni vengono fornite ai sensi dell’articolo 13 del decreto legislativo n. 196/2003.
 Il trattamento che intendiamo effettuare:
@@ -111,7 +112,7 @@ Acquisite le informazioni che precedono, rese ai sensi dell'art. 13 del D.Lgs. 1
 							</div>
 						</xsl:if>
 
-					</div><!-- id="colonnaSx" -->
+					</div><!-- id="corpoCentrale" -->
 					
 					<xsl:call-template name="pagina_footer" />
 	

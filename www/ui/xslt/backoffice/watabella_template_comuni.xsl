@@ -391,6 +391,23 @@
 </xsl:template>
 
 <!-- ********************************************************************** -->
+<!--  gli emoticon di tinymce vanno presi dal server cdn                    -->
+<!-- ********************************************************************** -->
+<xsl:template name="risolvi_emoticon">
+	<xsl:param name="string" />
+	
+	<xsl:variable name="out">
+		<xsl:call-template name="replace-string">
+			<xsl:with-param name='search'>img src="plugins/emoticons/img/</xsl:with-param>
+			<xsl:with-param name='replace'>img src="//cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.21/plugins/emoticons/img/</xsl:with-param>
+			<xsl:with-param name="string" select="$string"/>
+		</xsl:call-template>
+	</xsl:variable>									
+	<xsl:value-of select="$out" disable-output-escaping="yes" />
+	
+</xsl:template>
+
+<!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 </xsl:stylesheet>

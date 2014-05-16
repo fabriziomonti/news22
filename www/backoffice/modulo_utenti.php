@@ -82,7 +82,7 @@ class modulo_utenti extends backoffice
 		
 		$ctrl = $this->modulo->aggiungiCaricaFile("avatar", "Avatar (max 100x100)", $solaLettura);
 			$this->setUrlDoc($ctrl);
-		$this->modulo->aggiungiAreaTesto("descrizione", "Dice di sè", $solaLettura);
+		$this->aggiungiAreaTesto_ext($this->modulo, "descrizione", "Dice di sè", $solaLettura);
 		$this->modulo->aggiungiLogico("flag_sottoscrizione_articoli_via_email", "Invia nuovi articoli via email", $solaLettura);
 		$this->modulo->aggiungiLogico("flag_sottoscrizione_argomenti_via_email", "Invia nuovi argomenti via email", $solaLettura);
 			

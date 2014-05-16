@@ -27,10 +27,11 @@ function rispondiCommento(id_articolo, id_commento)
 		}
 	else
 		{
-		form.annulla_modifica.focus();
 		tinyMCE.get('testo').focus();
-		
 		}
+		
+	var elems = location.href.split("#");
+	location.href = elems[0] + "#modulo_commento";
 	}
 	
 //-------------------------------------------------------------------------
@@ -51,10 +52,11 @@ function modificaCommento(id_articolo, id_commento)
 	else
 		{
 		tinyMCE.get('testo').setContent(testo_commento);
-		form.annulla_modifica.focus();
 		tinyMCE.get('testo').focus();
-		
 		}
+		
+	var elems = location.href.split("#");
+	location.href = elems[0] + "#modulo_commento";
 	}
 	
 //-------------------------------------------------------------------------

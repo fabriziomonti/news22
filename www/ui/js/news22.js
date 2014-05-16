@@ -24,6 +24,10 @@ var news22 = new Class
 	//-------------------------------------------------------------------------
 	fuocoAlPrimoControllo: function ()
 	    {
+		// da non fare in caso di mobile...
+		if (this.isTouchDevice())
+			return ;
+		
 		// se la pagina ha una form e se la form ha un controllo di tipo testo
 		// diamo il focus al primo controllo di tipo testo
 		var focusForm;
@@ -50,6 +54,15 @@ var news22 = new Class
 			}
 	    },
 	    
+	//-------------------------------------------------------------------------
+	isTouchDevice: function ()
+		{
+		var msTouchEnabled = window.navigator.msMaxTouchPoints;
+		var generalTouchEnabled = "ontouchstart" in document.createElement("div");
+		return msTouchEnabled || generalTouchEnabled;
+		},
+
+
 	//-------------------------------------------------------------------------
 	verificaPassword: function (pwd, pwd2)
 	    {

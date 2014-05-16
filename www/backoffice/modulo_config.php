@@ -53,8 +53,8 @@ class modulo_config extends backoffice
 		
 		$this->modulo = $this->dammiModulo();
 		
-		$ctrl = $this->modulo->aggiungiLogico("navigazione_finestre", "Navigazione a finestre", false);
-			$ctrl->valore = $this->preferenzeUtente["navigazione_finestre"];
+		$ctrl = $this->modulo->aggiungiLogico("navigazione_interna", "Navigazione a finestre interne", false);
+			$ctrl->valore = $this->preferenzeUtente["navigazione_interna"];
 		$ctrl = $this->modulo->aggiungiSelezione("max_righe_tabella", "Nr. righe tabella per pagina", false, true, false);
 		$ctrl->rigaVuota = false;
 		for ($i = 10; $i <= 100; $i += 10)

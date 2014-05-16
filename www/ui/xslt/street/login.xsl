@@ -35,7 +35,7 @@
 					</xsl:if>
 					
 					<!-- COLONNA SX -->
-					<div id="colonnaSx">
+					<div id="corpoCentrale">
 						
 						<!-- se l'utente non è loggato mostriamo la form di login -->
 						<xsl:if test="not($dati_utente)">
@@ -46,7 +46,7 @@
 							</xsl:call-template>
 						</xsl:if>
 					
-					</div><!-- id="colonnaSx" -->
+					</div><!-- id="corpoCentrale" -->
 					
 					<xsl:call-template name="pagina_footer" />
 	

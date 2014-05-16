@@ -2,7 +2,11 @@
 <!DOCTYPE xsl:stylesheet [
     <!ENTITY nbsp "&#160;">
 ]>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" 
+				xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+				xmlns:str="http://exslt.org/strings" exclude-result-prefixes="str"
+				xmlns:exsl="http://exslt.org/common" extension-element-prefixes="exsl"
+>
 
 <xsl:import href="watabella_template_comuni.xsl"/>
 
@@ -21,7 +25,6 @@
 	
 	<!-- roba menu contestuale	(una parte...) -->
 	<script type='text/javascript' src='{watabella_path}/uis/wa_file_comuni/js/strmanage.js'></script><xsl:text>&#10;</xsl:text>
-	<script type='text/javascript' src='{watabella_path}/uis/wa_file_comuni/js/moo1.2.js'></script><xsl:text>&#10;</xsl:text>
 	<script type='text/javascript' src='{watabella_path}/uis/wa_file_comuni/js/watabella.js'></script><xsl:text>&#10;</xsl:text>
 	<script type='text/javascript' src='{watabella_path}/uis/wa_azioni_context/js/domready.js'></script><xsl:text>&#10;</xsl:text>
 
@@ -192,7 +195,10 @@
 									</a>
 								</xsl:when>
 								<xsl:when test="$col_info/converti_html = '0'">
-									<xsl:value-of select="valore" disable-output-escaping="yes" />
+									<!--maialata per gli emoticons...-->
+									<xsl:call-template name="risolvi_emoticon">
+										<xsl:with-param name="string" select="valore"/>
+									</xsl:call-template>
 								</xsl:when>
 								<xsl:when test="$col_info/tipo_campo = 'DATA'">
 									<xsl:if test="string-length(valore) &gt; 0">

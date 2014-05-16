@@ -21,6 +21,8 @@
 	<xsl:variable name="argomenti" select="exsl:node-set(pagina/elementi/elemento[nome='argomenti']/valore)" />
 	<xsl:variable name="commenti" select="exsl:node-set(pagina/elementi/elemento[nome='commenti']/valore)" />
 	<xsl:variable name="interventi" select="exsl:node-set(pagina/elementi/elemento[nome='interventi']/valore)" />
+	<xsl:variable name="max_char_titoli" >30</xsl:variable>
+	<xsl:variable name="max_char_commenti" >60</xsl:variable>
 
 	<html>
 		<xsl:call-template name="pagina_head_html" />
@@ -30,32 +32,37 @@
 					<xsl:call-template name="pagina_header" />
 
 					<!-- COLONNA SX -->
-					<div id="colonnaSx">
+					<div id="corpoCentrale">
 
 						<!--facciamo vedere il contenuto della pagina solo se non  abbiamo ricevuito un errore-->
 						<xsl:if test="not(pagina/elementi/elemento[nome='messaggio']/valore)">
-							<h1>
-								Il profilo di 
-								<xsl:value-of select="$utente_visualizzato/nickname" />
-							</h1>
-							<xsl:if test="$utente_visualizzato/avatar != ''">
-								<div>
-									<img src="../downloaddoc.php?tabella=utenti&amp;tipo=avatar&amp;id={$utente_visualizzato/id_utente}" style="margin-bottom: 20px; "/>
-								</div>
-							</xsl:if>
-							<xsl:if test="$utente_visualizzato/supervisore = '1'">
-								supervisore
-							</xsl:if>
-							iscritto dal <xsl:value-of select="substring-before($utente_visualizzato/data_ora_creazione, ' ')" />
-							<br />
-
-							<xsl:if test="$utente_visualizzato/descrizione != ''">
-								<h1 style="margin-top: 40px">
-									Dice di sè
+							
+							<div class="articolo_blocco">
+								<h1>
+									Il profilo di 
+									<xsl:value-of select="$utente_visualizzato/nickname" />
 								</h1>
-								<xsl:value-of disable-output-escaping="yes" select="$utente_visualizzato/descrizione" />
-							</xsl:if>
-							<br />
+								<xsl:if test="$utente_visualizzato/avatar != ''">
+									<div>
+										<img src="../downloaddoc.php?tabella=utenti&amp;tipo=avatar&amp;id={$utente_visualizzato/id_utente}" style="margin-bottom: 1.2em; "/>
+									</div>
+								</xsl:if>
+								<xsl:if test="$utente_visualizzato/supervisore = '1'">
+									supervisore
+								</xsl:if>
+								iscritto dal <xsl:value-of select="substring-before($utente_visualizzato/data_ora_creazione, ' ')" />
+								<br />
+
+								<xsl:if test="$utente_visualizzato/descrizione != ''">
+									<h1 style="margin-top: 3em;">
+										Dice di sè
+									</h1>
+									<xsl:call-template name="risolvi_emoticon">
+										<xsl:with-param name="string" select="$utente_visualizzato/descrizione"/>
+									</xsl:call-template>
+								</xsl:if>
+								<br />
+							</div>
 
 							<!--blocco articoli scritti dall'utente-->
 							<xsl:if test="$articoli/riga">
@@ -64,14 +71,14 @@
 										Gli articoli scritti da <xsl:value-of select="$utente_visualizzato/nickname" /> (<xsl:value-of select="$articoli/nr_righe_senza_limite" />)
 									</h1>
 
-									<a name="articoli" />
+									<a name="articoli"></a>
 									<table>
 										<xsl:for-each select="$articoli/riga">
 											<tr>
 												<td>
 													<a href="articolo.php?id_articolo={id_articolo}">
-														<xsl:value-of select="substring(titolo, 1, 90)" />
-														<xsl:if test="string-length(titolo) &gt; 90">
+														<xsl:value-of select="substring(titolo, 1, $max_char_commenti)" />
+														<xsl:if test="string-length(titolo) &gt; $max_char_commenti">
 															...
 														</xsl:if>
 													</a>
@@ -106,14 +113,14 @@
 										Gli argomenti proposti da <xsl:value-of select="$utente_visualizzato/nickname" /> (<xsl:value-of select="$argomenti/nr_righe_senza_limite" />)
 									</h1>
 
-									<a name="argomenti" />
+									<a name="argomenti"></a>
 									<table>
 										<xsl:for-each select="$argomenti/riga">
 											<tr>
 												<td>
 													<a href="argomento.php?id_argomento={id_argomento}">
-														<xsl:value-of select="substring(titolo, 1, 90)" />
-														<xsl:if test="string-length(titolo) &gt; 90">
+														<xsl:value-of select="substring(titolo, 1, $max_char_commenti)" />
+														<xsl:if test="string-length(titolo) &gt; $max_char_commenti">
 															...
 														</xsl:if>
 													</a>
@@ -121,7 +128,10 @@
 												<td>
 													in
 													<a href="forum.php?id_categoria_argomento={id_categoria_argomento}">
-														<xsl:value-of disable-output-escaping="yes" select="nome_categoria" />
+														<xsl:value-of select="substring(nome_categoria, 1, $max_char_titoli)" />
+														<xsl:if test="string-length(nome_categoria) &gt; $max_char_titoli">
+															...
+														</xsl:if>
 													</a>
 												</td>
 												<td style="text-align: right">
@@ -148,14 +158,14 @@
 										I commenti scritti da <xsl:value-of select="$utente_visualizzato/nickname" /> (<xsl:value-of select="$commenti/nr_righe_senza_limite" />)
 									</h1>
 
-									<a name="commenti" />
+									<a name="commenti"></a>
 									<table>
 										<xsl:for-each select="$commenti/riga">
 											<tr>
 												<td colspan="2">
 													<a href="articolo.php?id_articolo={id_articolo}&amp;pag_commenti={nr_pagina}#commento_{id_commento}">
-														<xsl:value-of select="substring(testo, 1, 90)" />
-														<xsl:if test="string-length(testo) &gt; 90">
+														<xsl:value-of select="substring(testo, 1, $max_char_commenti)" />
+														<xsl:if test="string-length(testo) &gt; $max_char_commenti">
 															...
 														</xsl:if>
 													</a>
@@ -169,8 +179,8 @@
 												<td>
 													in 
 													<a href="articolo.php?id_articolo={id_articolo}">
-														<xsl:value-of select="substring(titolo_articolo, 1, 90)" />
-														<xsl:if test="string-length(titolo_articolo) &gt; 90">
+														<xsl:value-of select="substring(titolo_articolo, 1, $max_char_commenti)" />
+														<xsl:if test="string-length(titolo_articolo) &gt; $max_char_commenti">
 															...
 														</xsl:if>
 													</a>
@@ -178,7 +188,10 @@
 												<td>
 													in
 													<a href="index.php?id_categoria_articolo={id_categoria_articolo}">
-														<xsl:value-of disable-output-escaping="yes" select="nome_categoria" />
+														<xsl:value-of select="substring(nome_categoria, 1, $max_char_titoli)" />
+														<xsl:if test="string-length(nome_categoria) &gt; $max_char_titoli">
+															...
+														</xsl:if>
 													</a>
 												</td>
 												<td style="text-align: right">
@@ -187,7 +200,7 @@
 												</td>
 											</tr>
 											<tr>
-												<td style="height: 20px;"> </td>
+												<td style="height: 1.2em;"> </td>
 											</tr>
 										</xsl:for-each>
 									</table>
@@ -207,14 +220,14 @@
 										Gli interventi di <xsl:value-of select="$utente_visualizzato/nickname" /> (<xsl:value-of select="$interventi/nr_righe_senza_limite" />)
 									</h1>
 
-									<a name="interventi" />
+									<a name="interventi"></a>
 									<table>
 										<xsl:for-each select="$interventi/riga">
 											<tr>
 												<td colspan="2">
 													<a href="argomento.php?id_argomento={id_argomento}&amp;pag_interventi={nr_pagina}#intervento_{id_intervento}">
-														<xsl:value-of select="substring(testo, 1, 90)" />
-														<xsl:if test="string-length(testo) &gt; 90">
+														<xsl:value-of select="substring(testo, 1, $max_char_commenti)" />
+														<xsl:if test="string-length(testo) &gt; $max_char_commenti">
 															...
 														</xsl:if>
 													</a>
@@ -228,8 +241,8 @@
 												<td>
 													in 
 													<a href="argomento.php?id_argomento={id_argomento}">
-														<xsl:value-of select="substring(titolo_argomento, 1, 90)" />
-														<xsl:if test="string-length(titolo_argomento) &gt; 90">
+														<xsl:value-of select="substring(titolo_argomento, 1, $max_char_commenti)" />
+														<xsl:if test="string-length(titolo_argomento) &gt; $max_char_commenti">
 															...
 														</xsl:if>
 													</a>
@@ -237,7 +250,10 @@
 												<td>
 													in
 													<a href="forum.php?id_categoria_argomento={id_categoria_argomento}">
-														<xsl:value-of disable-output-escaping="yes" select="nome_categoria" />
+														<xsl:value-of select="substring(nome_categoria, 1, $max_char_titoli)" />
+														<xsl:if test="string-length(nome_categoria) &gt; $max_char_titoli">
+															...
+														</xsl:if>
 													</a>
 												</td>
 												<td style="text-align: right">
@@ -246,7 +262,7 @@
 												</td>
 											</tr>
 											<tr>
-												<td style="height: 20px;"> </td>
+												<td style="height: 1.2em;"> </td>
 											</tr>
 										</xsl:for-each>
 									</table>
@@ -263,7 +279,7 @@
 							
 						</xsl:if> <!--no messaggio errore -->
 
-					</div><!-- id="colonnaSx" -->
+					</div><!-- id="corpoCentrale" -->
 					
 					<xsl:call-template name="pagina_footer" />
 	
