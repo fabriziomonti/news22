@@ -28,6 +28,7 @@ var waareatesto_ext = new Class
 							forced_root_block : false,
 							force_br_newlines : true,
 							force_p_newlines : false,
+							width: "99%",
 							selector : ".mceEditor",
 							plugins : "fullscreen, link, image, textcolor, emoticons, table, code, media, template, hr",
 							menu :	
@@ -45,11 +46,11 @@ var waareatesto_ext = new Class
 							statusbar : false,
 							setup: function(editor) 
 								{
-//								editor.on('BeforeRenderUI', function(e) 
-//									{
+								editor.on('BeforeRenderUI', function(e) 
+									{
 //									this.settings.width = this.getElement().style.width;
 //									this.settings.height = this.getElement().style.height;
-//									});
+									});
 
 								}
 

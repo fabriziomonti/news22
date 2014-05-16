@@ -2,6 +2,8 @@ form.wamodulo
 	{
 	background-color: #cacaca;
 	background: linear-gradient(0deg, white, #cacaca 99%) no-repeat;
+	margin-left: auto;
+	margin-right: auto;
 	}
 	
 	
@@ -58,4 +60,29 @@ div.wamodulo_areatesto_ext span
 	{
 	border: none;
 	}
+	
+form.wamodulo div.etichetta
+	{
+	margin-left: 13px;
+	margin-top: 10px;
+	font-weight: bold;
+	}
+	
+form.wamodulo div.controllo
+	{
+	margin-left: 10px;
+	}
+	
+form.wamodulo div.bottone
+	{
+	display: inline;
+	margin-left: 10px;
+	}
+	
+form.wamodulo div.noncontrollo#separatore_sopra_bottoniera,
+form.wamodulo div.noncontrollo#separatore_sotto_bottoniera
+	{
+	margin-top: 20px;
+	}
+	
 	

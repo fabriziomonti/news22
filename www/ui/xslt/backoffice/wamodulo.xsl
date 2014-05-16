@@ -5,27 +5,29 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/wamodulo_template_comuni.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/areatesto.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/bottone.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/captcha.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/caricafile.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/cfpi.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/cornice.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/data.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/dataora.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/email.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/etichetta.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/intero.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/logico.xsl"/>
-<!--<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/multiselezione.xsl"/>-->
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/multiselezione_checkbox.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/noncontrollo.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/opzione.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/ora.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/password.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/selezione.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/testo.xsl"/>
-<xsl:import href="../../../walibs3/wamodulo/uis/wa_default/xslt/valuta.xsl"/>
+<xsl:import href="areatesto.xsl"/>
+<xsl:import href="bottone.xsl"/>
+<xsl:import href="captcha.xsl"/>
+<xsl:import href="caricafile.xsl"/>
+<xsl:import href="cfpi.xsl"/>
+<xsl:import href="cornice.xsl"/>
+<xsl:import href="data.xsl"/>
+<xsl:import href="dataora.xsl"/>
+<xsl:import href="email.xsl"/>
+<xsl:import href="etichetta.xsl"/>
+<xsl:import href="intero.xsl"/>
+<xsl:import href="logico.xsl"/>
+<!--<xsl:import href="multiselezione.xsl"/>-->
+<xsl:import href="multiselezione_checkbox.xsl"/>
+<xsl:import href="noncontrollo.xsl"/>
+<xsl:import href="opzione.xsl"/>
+<xsl:import href="ora.xsl"/>
+<xsl:import href="password.xsl"/>
+<xsl:import href="selezione.xsl"/>
+<xsl:import href="testo.xsl"/>
+<xsl:import href="valuta.xsl"/>
+
+<xsl:import href="wamodulo_ridefinizione_template_comuni.xsl"/>
 
 <xsl:import href="modulo.xsl"/>
 <xsl:import href="../../../wamodulo_ext/ui/xslt/selezione_ext.xsl"/>

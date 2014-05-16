@@ -47,7 +47,7 @@
 		</xsl:choose>	
  	</xsl:variable>
 	<xsl:text>&#10;</xsl:text>
-	<form id='{nome}' action='{pagina_destinazione}' method='post' enctype='multipart/form-data' class='wamodulo' style='{$mysinistra}; top: {alto}px; width: {larghezza}px; height: {altezza}px;'>
+	<form id='{nome}' action='{pagina_destinazione}' method='post' enctype='multipart/form-data' class='wamodulo'>
 		<div>
 			<!-- controllo hidden che viene utilizzato dalla classe per stabilire 
 			se la form che ha effettuato submit sia relativa alla propria 

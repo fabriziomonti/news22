@@ -2,23 +2,41 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- ********************************************************************** -->
-<!-- template areatesto                                                     -->
+<!-- template selezione                                                     -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext">
+<xsl:template match="selezione">
 
-	<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.21/tinymce.min.js'></script><xsl:text>&#10;</xsl:text>
 	<xsl:call-template name="intestazione_controllo"/>
 	
 	<div class="controllo">
-		<div class="wamodulo_areatesto_ext">
-			<textarea name='{@id}' id='{@id}'>
-				<xsl:call-template name="dammiattributicontrollo"/>
-				<xsl:attribute name="class">mceEditor</xsl:attribute>
-				<xsl:value-of select="valore"/>		
-			</textarea>
-		</div>
-	</div>
+		<select name='{@id}'>
+			<xsl:call-template name="dammiattributicontrollo"/>
+			<xsl:if test="riga_vuota = '1' ">
+				<option value=''></option>
+			</xsl:if>
 
+			<xsl:for-each select="lista/elemento">
+				<option value='{@id}'>
+					<xsl:variable name="myoption">
+						<xsl:choose>
+							<xsl:when test="substring-before(@id, '|') != ''">
+								<xsl:value-of select="substring-before(./@id, '|')"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@id"/>
+							</xsl:otherwise>
+						</xsl:choose>	
+					</xsl:variable>
+					<xsl:if test="$myoption = ../../valore">
+						<xsl:attribute name='selected'>selected</xsl:attribute>
+					</xsl:if>
+					<xsl:value-of select="."/>
+				</option>
+			</xsl:for-each>
+			<xsl:text>&#10;</xsl:text>
+		</select>
+	</div>
+		
 </xsl:template>
 
 <!-- ********************************************************************** -->
@@ -26,7 +44,7 @@
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext.input">
+<xsl:template match="selezione.input">
 	<xsl:element name="{@id}">
 		<xsl:variable name="id" select="@id" />
 		<xsl:choose>
@@ -36,8 +54,6 @@
 			<xsl:otherwise>__wamodulo_valore_non_ritornato__</xsl:otherwise>
 		</xsl:choose>
 	</xsl:element>
-
 </xsl:template>
-
 
 </xsl:stylesheet>

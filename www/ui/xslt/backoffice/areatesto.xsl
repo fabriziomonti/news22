@@ -4,21 +4,15 @@
 <!-- ********************************************************************** -->
 <!-- template areatesto                                                     -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext">
+<xsl:template match="areatesto">
 
-	<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.21/tinymce.min.js'></script><xsl:text>&#10;</xsl:text>
 	<xsl:call-template name="intestazione_controllo"/>
-	
 	<div class="controllo">
-		<div class="wamodulo_areatesto_ext">
-			<textarea name='{@id}' id='{@id}'>
-				<xsl:call-template name="dammiattributicontrollo"/>
-				<xsl:attribute name="class">mceEditor</xsl:attribute>
-				<xsl:value-of select="valore"/>		
-			</textarea>
-		</div>
+		<textarea name='{@id}' cols='{colonne}' rows='{righe}'>
+			<xsl:call-template name="dammiattributicontrollo"/>
+			<xsl:value-of select="valore"/>		
+		</textarea>
 	</div>
-
 </xsl:template>
 
 <!-- ********************************************************************** -->
@@ -26,7 +20,7 @@
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext.input">
+<xsl:template match="areatesto.input">
 	<xsl:element name="{@id}">
 		<xsl:variable name="id" select="@id" />
 		<xsl:choose>

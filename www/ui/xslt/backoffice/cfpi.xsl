@@ -2,22 +2,19 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- ********************************************************************** -->
-<!-- template areatesto                                                     -->
+<!-- template cfpi                                                         -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext">
+<xsl:template match="cfpi">
 
-	<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.21/tinymce.min.js'></script><xsl:text>&#10;</xsl:text>
-	<xsl:call-template name="intestazione_controllo"/>
-	
-	<div class="controllo">
-		<div class="wamodulo_areatesto_ext">
-			<textarea name='{@id}' id='{@id}'>
-				<xsl:call-template name="dammiattributicontrollo"/>
-				<xsl:attribute name="class">mceEditor</xsl:attribute>
-				<xsl:value-of select="valore"/>		
-			</textarea>
-		</div>
-	</div>
+	<xsl:call-template name="testo"/>
+
+	<!--	parcheggiamo le proprieta' particolari nel controllo html, in modo che-->
+	<!--	poi la classe applicativa  possa ritrovarli-->
+	<script type='text/Javascript'>
+		document.getElementById('<xsl:value-of select="/wamodulo/nome" />').<xsl:value-of select="@id" />.gestioneCF  =  "<xsl:value-of select="gestione_cf"/>";
+		document.getElementById('<xsl:value-of select="/wamodulo/nome" />').<xsl:value-of select="@id" />.gestionePI  =  "<xsl:value-of select="gestione_pi"/>";
+	</script>
+
 
 </xsl:template>
 
@@ -26,7 +23,8 @@
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext.input">
+<xsl:template match="cfpi.input">
+
 	<xsl:element name="{@id}">
 		<xsl:variable name="id" select="@id" />
 		<xsl:choose>

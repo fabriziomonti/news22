@@ -22,10 +22,12 @@
 			
 			<!--js fancybox-->
 			<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><xsl:text>&#10;</xsl:text>
+			<!--			
 			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.pack.js"></script><xsl:text>&#10;</xsl:text>
 			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.easing-1.4.pack.js"></script><xsl:text>&#10;</xsl:text>
 			<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.mousewheel-3.0.4.pack.js"></script><xsl:text>&#10;</xsl:text>
 			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/1.3.4/jquery.fancybox-1.3.4.css" type="text/css" media="screen" /><xsl:text>&#10;</xsl:text>
+			-->
 			
 			<!--siccome usiamo sia mootols che jquery, jquery deve essere chiamato per esteso-->
 			<script type="text/javascript">
@@ -53,9 +55,9 @@
 			<!-- se lavoriamo con navigazione interna creiamo anche l'iframe destinato a contenere la finestra figlia-->
 			<xsl:text>&#10;</xsl:text>
 			<xsl:if test="modalita_navigazione = '3'">
-				<!--	<iframe id='waapplicazione_iframe_figlia' class='waapplicazione_iframe_figlia' style='visibility:hidden'>
-				</iframe>-->
-				<a class="iframe" id="fb_iframe" href="" style="display:none;"></a>
+				<iframe id='waapplicazione_iframe_figlia' class='waapplicazione_iframe_figlia' style='visibility:hidden'>
+				</iframe>
+				<!--<a class="iframe" id="fb_iframe" href="" style="display:none;"></a>-->
 			</xsl:if>
 	
 			<!-- creazione degli elementi costitutivi della pagina (titolo, tabelle, moduli, testo libero, ecc.-->

@@ -2,23 +2,18 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- ********************************************************************** -->
-<!-- template areatesto                                                     -->
+<!-- template testo                                                         -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext">
+<xsl:template match="noncontrollo" name="noncontrollo">
+	<xsl:param name="tipo" />
 
-	<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.21/tinymce.min.js'></script><xsl:text>&#10;</xsl:text>
 	<xsl:call-template name="intestazione_controllo"/>
-	
-	<div class="controllo">
-		<div class="wamodulo_areatesto_ext">
-			<textarea name='{@id}' id='{@id}'>
-				<xsl:call-template name="dammiattributicontrollo"/>
-				<xsl:attribute name="class">mceEditor</xsl:attribute>
-				<xsl:value-of select="valore"/>		
-			</textarea>
-		</div>
+	<div id='{@id}'>
+		<xsl:call-template name="dammiattributicontrollo"/>
+		<xsl:attribute name='class'>noncontrollo</xsl:attribute>
+		<xsl:value-of disable-output-escaping="yes" select="valore" />
 	</div>
-
+	
 </xsl:template>
 
 <!-- ********************************************************************** -->
@@ -26,7 +21,7 @@
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext.input">
+<xsl:template match="noncontrollo.input">
 	<xsl:element name="{@id}">
 		<xsl:variable name="id" select="@id" />
 		<xsl:choose>
@@ -36,8 +31,6 @@
 			<xsl:otherwise>__wamodulo_valore_non_ritornato__</xsl:otherwise>
 		</xsl:choose>
 	</xsl:element>
-
 </xsl:template>
-
 
 </xsl:stylesheet>

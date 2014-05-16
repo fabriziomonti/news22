@@ -120,6 +120,7 @@ class backoffice extends news22
 									$cmdCloseCaption = 'Chiudi',
 									$buttonWidth = 120)
 		{
+		$modulo->aggiungiNonControllo("separatore_sopra_bottoniera");
 		$ultimo_controllo = $modulo->controlli[count($modulo->controlli) - 1];
 		$top = $ultimo_controllo->alto + $ultimo_controllo->altezza +
 				$modulo->altezzaLineaControlli + $modulo->interlineaControlli;
@@ -156,6 +157,7 @@ class backoffice extends news22
 			$nextButtonLeft = $ctrl->sinistra + $ctrl->larghezza + 1;
 			}
 			
+		$modulo->aggiungiNonControllo("separatore_sotto_bottoniera");
 		return $nextButtonLeft;
 		
 		}

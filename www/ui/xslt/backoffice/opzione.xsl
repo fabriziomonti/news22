@@ -2,23 +2,37 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- ********************************************************************** -->
-<!-- template areatesto                                                     -->
+<!-- template opzione                                                       -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext">
+<xsl:template match="opzione">
 
-	<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.21/tinymce.min.js'></script><xsl:text>&#10;</xsl:text>
 	<xsl:call-template name="intestazione_controllo"/>
-	
-	<div class="controllo">
-		<div class="wamodulo_areatesto_ext">
-			<textarea name='{@id}' id='{@id}'>
-				<xsl:call-template name="dammiattributicontrollo"/>
-				<xsl:attribute name="class">mceEditor</xsl:attribute>
-				<xsl:value-of select="valore"/>		
-			</textarea>
-		</div>
-	</div>
+	<xsl:variable name="nome" select="@id" />
+	<xsl:variable name="valore" select="valore" />
 
+	<div class="controllo">
+		<xsl:for-each select="lista/elemento">
+			<xsl:variable name="idx" select="position() - 1" />
+			<input type='radio' name='{$nome}' value='{@id}'>
+				<xsl:if test="@id = $valore">
+					<xsl:attribute name='checked'>checked</xsl:attribute>
+				</xsl:if>
+				<xsl:call-template name="dammiattributicontrollo">
+					<xsl:with-param name="offset_sinistra"><xsl:value-of select="$idx * 110"/></xsl:with-param>
+					<xsl:with-param name="src_parametri" select="../.." />
+				</xsl:call-template>
+			</input>
+			<label id='wamodulo_lblradio_{$nome}[{$idx}]'>
+				<xsl:call-template name="dammiattributicontrollo">
+					<xsl:with-param name="offset_sinistra"><xsl:value-of select="($idx * 110) + 26"/></xsl:with-param>
+					<xsl:with-param name="src_parametri" select="../.." />
+				</xsl:call-template>
+				<xsl:value-of select="." />
+			</label>
+
+		</xsl:for-each>
+	</div>
+	
 </xsl:template>
 
 <!-- ********************************************************************** -->
@@ -26,7 +40,7 @@
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext.input">
+<xsl:template match="opzione.input">
 	<xsl:element name="{@id}">
 		<xsl:variable name="id" select="@id" />
 		<xsl:choose>
@@ -36,8 +50,6 @@
 			<xsl:otherwise>__wamodulo_valore_non_ritornato__</xsl:otherwise>
 		</xsl:choose>
 	</xsl:element>
-
 </xsl:template>
-
 
 </xsl:stylesheet>

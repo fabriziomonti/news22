@@ -23,50 +23,50 @@ var backoffice = new Class
 	
 	//-------------------------------------------------------------------------
 	// ridefiniamo la apri pagina per usare jquery e fancybox
-	apriPagina: function (pagina)
-	    {
-		this.hoUnaPaginaAPerta = true;
-		
-		if (this.modalitaNavigazione == this.modalitaNavigazioneFinestra)
-			return this.parent(pagina);
-		
-		jQuery("a.iframe").fancybox(
-								{
-								href : pagina,
-								type : 'iframe',
-								hideOnOverlayClick: false,
-								width: 1024,
-								height: 800,
-								speedIn	:	0, 
-								speedOut :	0,
-								padding: 0,
-								margin: 20,
-								onCleanup: function() 
-											{
-											if (self.frames[0] && 
-													self.frames[0].document.wapagina &&
-													self.frames[0].document.wapagina.chiudiPagina)
-												return self.frames[0].document.wapagina.chiudiPagina();
-											}
-								}
-								);
-	
-			jQuery("a.iframe").click();
-
-		},
-	    
-	//-------------------------------------------------------------------------
-	// ridefiniamo la chiudi pagina per usare jquery e fancybox
-	chiudiPagina: function ()
-	    {
-		w = opener ? opener : parent;
-		w.document.wapagina.hoUnaPaginaAPerta = false;
-		if (this.modalitaNavigazione == this.modalitaNavigazioneFinestra)
-			return this.parent();
-
-		parent.jQuery.fancybox.close();
-		return true;
-		},
+//	apriPagina: function (pagina)
+//	    {
+//		this.hoUnaPaginaAPerta = true;
+//		
+//		if (this.modalitaNavigazione == this.modalitaNavigazioneFinestra)
+//			return this.parent(pagina);
+//		
+//		jQuery("a.iframe").fancybox(
+//								{
+//								href : pagina,
+//								type : 'iframe',
+//								hideOnOverlayClick: false,
+//								width: 1024,
+//								height: 800,
+//								speedIn	:	0, 
+//								speedOut :	0,
+//								padding: 0,
+//								margin: 20,
+//								onCleanup: function() 
+//											{
+//											if (self.frames[0] && 
+//													self.frames[0].document.wapagina &&
+//													self.frames[0].document.wapagina.chiudiPagina)
+//												return self.frames[0].document.wapagina.chiudiPagina();
+//											}
+//								}
+//								);
+//	
+//			jQuery("a.iframe").click();
+//
+//		},
+//	    
+//	//-------------------------------------------------------------------------
+//	// ridefiniamo la chiudi pagina per usare jquery e fancybox
+//	chiudiPagina: function ()
+//	    {
+//		w = opener ? opener : parent;
+//		w.document.wapagina.hoUnaPaginaAPerta = false;
+//		if (this.modalitaNavigazione == this.modalitaNavigazioneFinestra)
+//			return this.parent();
+//
+//		parent.jQuery.fancybox.close();
+//		return true;
+//		},
 	    
 	//-------------------------------------------------------------------------
 	intercettaEsc: function (event)

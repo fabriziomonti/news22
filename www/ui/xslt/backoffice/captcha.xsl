@@ -2,23 +2,23 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- ********************************************************************** -->
-<!-- template areatesto                                                     -->
+<!-- template captcha                                                         -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext">
-
-	<script type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.21/tinymce.min.js'></script><xsl:text>&#10;</xsl:text>
+<xsl:template match="captcha">
 	<xsl:call-template name="intestazione_controllo"/>
-	
-	<div class="controllo">
-		<div class="wamodulo_areatesto_ext">
-			<textarea name='{@id}' id='{@id}'>
-				<xsl:call-template name="dammiattributicontrollo"/>
-				<xsl:attribute name="class">mceEditor</xsl:attribute>
-				<xsl:value-of select="valore"/>		
-			</textarea>
-		</div>
-	</div>
 
+	<div class="controllo">
+		<img id='{/wamodulo/nome}_captcha_img_{@id}' src='{/wamodulo/wamodulo_path}/uis/wa_default/img/captcha.php?k={valore}' >
+			<xsl:call-template name="dammilayout"/>
+		</img>
+		<input type='hidden' name='k_{@id}' value='{valore}'/>
+		<input type='text' name='{@id}' maxlength='{caratteri_max}' size='{caratteri_max}'>
+			<xsl:call-template name="dammiattributicontrollo">
+				<xsl:with-param name="offset_sinistra"><xsl:value-of select="80"/></xsl:with-param>
+			</xsl:call-template>
+		</input>
+	</div>
+	
 </xsl:template>
 
 <!-- ********************************************************************** -->
@@ -26,16 +26,20 @@
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
-<xsl:template match="areatesto_ext.input">
+<xsl:template match="captcha.input">
+
+	<!-- deve tornare un array con 2 elementi: la chiave e il valore -->
 	<xsl:element name="{@id}">
 		<xsl:variable name="id" select="@id" />
 		<xsl:choose>
 			<xsl:when test="/wamodulo.input/post/item[@id=$id]">
-				<xsl:value-of select="/wamodulo.input/post/item[@id=$id]" />
+				<k><xsl:value-of select="/wamodulo.input/post/item[@id=concat('k_', $id)]" /></k>
+				<v><xsl:value-of select="/wamodulo.input/post/item[@id=$id]" /></v>
 			</xsl:when>
 			<xsl:otherwise>__wamodulo_valore_non_ritornato__</xsl:otherwise>
 		</xsl:choose>
 	</xsl:element>
+	
 
 </xsl:template>
 
